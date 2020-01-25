@@ -1,0 +1,3 @@
+[submodule "PKHeX.Core-Lambda"]
+	path = PKHeX.Core-Lambda
+	url = https://github.com/zaksabeast/PKHeX-Lambda.git

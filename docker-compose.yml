@@ -1,0 +1,61 @@
+version: "3.7"
+services:
+  pkhex-lambda:
+    image: lambci/lambda:dotnetcore2.1
+    ports:
+      - 9001:9001
+    volumes:
+      - ./PKHeX.Core-Lambda/bin/release/netcoreapp2.1/unzipped:/var/task
+    env_file:
+      - ./.PKHeX.Core-Lambda.env
+  pkhex-lambda-proxy:
+    image: node:current-alpine
+    working_dir: /app
+    ports:
+      - 5002:5000
+    volumes:
+      - ./PKHeX.Core-Lambda-proxy:/app
+    environment:
+      - PKHEX_LAMBDA_URL=http://pkhex-lambda:9001/2015-03-31/functions/myfunction/invocations
+    entrypoint:
+      - yarn
+      - start
+  api:
+    image: node:current-alpine
+    working_dir: /app
+    ports:
+      - 5000:5000
+    volumes:
+      - ./pkx-box-lambda:/app
+      - ./docker-stubs/pkx-box-lambda/index.js:/app/index.js
+      - ./docker-stubs/pkx-box-lambda/src/utils/create-context.js:/app/src/utils/create-context.js
+    env_file:
+      - ./pkx-box-lambda/.env
+    entrypoint:
+      - yarn
+      - start
+  auth:
+    image: node:current-alpine
+    working_dir: /app
+    ports:
+      - 5001:5000
+    volumes:
+      - ./discord-jwt:/app
+      - ./docker-stubs/discord-jwt/index.js:/app/index.js
+    env_file:
+      - ./discord-jwt/.env
+    entrypoint:
+      - yarn
+      - start
+  web-app:
+    image: node:current-alpine
+    working_dir: /app
+    ports:
+      - 3000:3000
+    volumes:
+      - ./web-app:/app
+    environment:
+      - REACT_APP_API=http://localhost:5000/graphql
+    entrypoint:
+      - yarn
+      - start
