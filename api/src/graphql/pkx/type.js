@@ -86,7 +86,7 @@ export const PKXType = gql`
     TSV: Int
     IsUntraded: Boolean
     Characteristic: Int
-    EncryptionConstant: BigInt
+    EncryptionConstant: String
     Sanity: Int
     Checksum: Int
     Species: Int
@@ -99,7 +99,7 @@ export const PKXType = gql`
     Favorite: Boolean
     CanGigantamax: Boolean
     MarkValue: Int
-    PID: BigInt
+    PID: String
     Nature: Int
     StatNature: Int
     FatefulEncounter: Boolean
@@ -445,13 +445,8 @@ export const PKXType = gql`
   type PKXDocument {
     "An Id which can be used to reference the PKX."
     id: String
+    isPublic: Boolean
+    owner: User
     pkx: PKX
-  }
-
-  extend type Query {
-    "Fetches a single PKX."
-    pkx(userId: String!, pkxId: String!): PKXDocument
-    "Fetches a list of PKXs from a user.  The user defaults to the requester."
-    pkxList(userId: String): [PKXDocument]!
   }
 `;

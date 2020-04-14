@@ -1,10 +1,11 @@
 import jwt from 'jsonwebtoken';
+import { generalConfig } from '../config/general';
 
 export const createContext = async ({ req }) => {
   const { jwt: token } = req.cookies || {};
 
   if (token) {
-    const user = await jwt.verify(token, process.env.JWT_SECRET, {
+    const user = await jwt.verify(token, generalConfig.jwtSecret, {
       algorithms: ['RS256'],
     });
 

@@ -26,11 +26,11 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - ./pkx-box-lambda:/app
-      - ./docker-stubs/pkx-box-lambda/index.js:/app/index.js
-      - ./docker-stubs/pkx-box-lambda/src/utils/create-context.js:/app/src/utils/create-context.js
+      - ./api:/app
+      - ./docker-stubs/api/index.js:/app/index.js
+      - ./docker-stubs/api/src/utils/create-context.js:/app/src/utils/create-context.js
     env_file:
-      - ./pkx-box-lambda/.env
+      - ./api/.env
     entrypoint:
       - yarn
       - start
