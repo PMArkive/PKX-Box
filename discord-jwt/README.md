@@ -26,7 +26,6 @@ By putting this behind an API Gateway with other services, any request made to a
 - DISCORD_REDIRECT_URI - Discord redirect uri
 - REDIRECT_URL - redirect url after the user has successfully logged in
 - JWT_SECRET - secret or key to sign the JWT
-- ADMIN_IDS - a quick Admin hack which should be removed in the future. It holds the comma separated Discord user Ids of admins for a platform
 
 ## Primary tools used
 
