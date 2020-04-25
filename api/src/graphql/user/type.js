@@ -2,15 +2,16 @@ import { gql } from 'apollo-server-express';
 
 export const UserType = gql`
   type User {
-    id: String!
-    username: String
-    discriminator: String
+    id: DiscordId!
+    discordUsername: String
+    discordDiscriminator: String
+    collection(collectionId: FirestoreId!): Collection
     collections: [Collection]
   }
 
   extend type Query {
     "User of the requester."
-    me: User
-    user(id: String!): User
+    viewer: User
+    user(userId: DiscordId!): User
   }
 `;

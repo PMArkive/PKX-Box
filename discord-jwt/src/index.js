@@ -6,7 +6,7 @@ const oauth = new DiscordOAuth2();
 
 export const app = express();
 
-const exchangeCodeForUser = async (code) => {
+const exchangeCodeForUser = async code => {
   const { access_token } = await oauth.tokenRequest({
     code,
     clientId: process.env.DISCORD_CLIENT_ID,
@@ -22,9 +22,13 @@ app.get('/discord', async (req, res) => {
   const { code } = req.query;
   const user = await exchangeCodeForUser(code);
 
-  const signedUser = await jwt.sign(user, process.env.JWT_SECRET, {
-    algorithm: 'RS256',
-  });
+  const signedUser = await jwt.sign(
+    user,
+    process.env.JWT_SECRET.replace(/\\n/g, '\n'),
+    {
+      algorithm: 'RS256',
+    },
+  );
 
   res.cookie('jwt', signedUser, { maxAge: 900000, httpOnly: true });
   res.redirect(process.env.REDIRECT_URL);

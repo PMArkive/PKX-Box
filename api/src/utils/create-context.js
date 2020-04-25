@@ -9,8 +9,13 @@ export const createContext = async ({ req }) => {
       algorithms: ['RS256'],
     });
 
-    if (user.id && user.username) return { user };
+    if (user.id && user.username)
+      return {
+        user: {
+          ...user,
+          discordUsername: user.username,
+          discordDiscriminator: user.discriminator,
+        },
+      };
   }
-
-  throw new Error('Not Authenticated');
 };

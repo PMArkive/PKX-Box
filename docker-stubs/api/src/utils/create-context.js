@@ -1,5 +1,5 @@
 export const createContext = () => {
   return {
-    user: { username: "testUser", id: "123456789", discriminator: "1234" }
+    user: { discordUsername: 'testUser', id: '123456789', discordDiscriminator: '1234' },
   };
 };

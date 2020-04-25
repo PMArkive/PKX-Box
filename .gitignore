@@ -109,3 +109,6 @@ dist
 # Env files
 *.env
 secrets/
+
+# Builds
+deploy.zip

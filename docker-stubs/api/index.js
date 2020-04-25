@@ -1,3 +1,6 @@
 import { app } from './src';
 
-app.listen(5000);
+const port = 5000;
+app.listen(port, () =>
+  console.log(`Access GraphQL Playground from http://localhost:${port}/graphql`),
+);

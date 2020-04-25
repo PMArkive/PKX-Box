@@ -6,8 +6,9 @@ services:
       - 9001:9001
     volumes:
       - ./PKHeX.Core-Lambda/bin/release/netcoreapp2.1/unzipped:/var/task
-    env_file:
-      - ./.PKHeX.Core-Lambda.env
+    environment:
+      - DOCKER_LAMBDA_STAY_OPEN=true
+      - AWS_LAMBDA_FUNCTION_HANDLER=PKHeXLambda::PKHeXLambda.Functions::ParsePKX
   pkhex-lambda-proxy:
     image: node:current-alpine
     working_dir: /app
@@ -47,3 +48,17 @@ services:
     entrypoint:
       - yarn
       - start
+  web-app:
+    image: node:current-alpine
+    working_dir: /app
+    ports:
+      - 3000:3000
+    volumes:
+      - ./web-app:/app
+    environment:
+      - REACT_APP_API=http://localhost:5000/graphql
+      - REACT_APP_LOGIN_URL=http://localhost:3000/
+    entrypoint:
+      - yarn
+      - start
+    tty: true
