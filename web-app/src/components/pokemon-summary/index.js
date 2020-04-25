@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { useTranslation } from 'react-i18next';
 import { PokemonItem } from '../pokemon-item';
+import { PokemonBall } from '../pokemon-ball';
 import { PokemonSprite } from '../pokemon-sprite';
 import { TitleCard } from '../title-card';
 
@@ -28,7 +29,7 @@ export const PokemonSummary = ({
   return (
     <TitleCard title={t(`species.${species}`)}>
       <PokemonSprite id={species} />
-      <PokemonItem id={ball} />
+      <PokemonBall id={ball} />
       <PokemonItem id={heldItem} />
       <Typography className={classes.ivs} color="textSecondary">
         {ivs.join('.')}

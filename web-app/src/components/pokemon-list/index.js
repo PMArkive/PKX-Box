@@ -5,7 +5,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import IconButton from '@material-ui/core/IconButton';
 import { useTranslation } from 'react-i18next';
-import { PokemonItem } from '../pokemon-item';
+import { PokemonBall } from '../pokemon-ball';
 import { PokemonSprite } from '../pokemon-sprite';
 import { getLocalizedDate } from '../../utils/get-localized-date';
 import { useHistory } from 'react-router-dom';
@@ -14,13 +14,14 @@ import { createPokemonRoute } from '../../routes';
 
 const SpeciesCell = ({ species }) => <PokemonSprite id={species} />;
 
-const BallCell = ({ ball }) => <PokemonItem id={ball} />;
+const BallCell = ({ ball }) => <PokemonBall id={ball} />;
 
 const ShinyCell = ({ isShiny }) => (isShiny ? <CheckIcon /> : null);
 
 const EggCell = ({ isEgg }) => (isEgg ? <CheckIcon /> : null);
 
-const CanGigantamaxCell = ({ canGigantamax }) => (canGigantamax ? <CheckIcon /> : null);
+const CanGigantamaxCell = ({ canGigantamax }) =>
+  canGigantamax ? <CheckIcon /> : null;
 
 const IVsCell = ({ IV_HP, IV_ATK, IV_DEF, IV_SPA, IV_SPD, IV_SPE }) =>
   [IV_HP, IV_ATK, IV_DEF, IV_SPA, IV_SPD, IV_SPE].join('/');
@@ -48,16 +49,24 @@ export const PokemonList = ({
 
   // These allow us to keep display names for debugging, and allows us to use hooks with mui-virtualized-table cells
   const LanguageCell = ({ language }) => t(`languages.${language}`);
-  const AbilityCell = ({ ability }) => (ability > -1 ? t(`abilities.${ability}`) : t('None'));
+  const AbilityCell = ({ ability }) =>
+    ability > -1 ? t(`abilities.${ability}`) : t('None');
   const MovesCell = ({ move1, move2, move3, move4 }) =>
-    [t(`moves.${move1}`), t(`moves.${move2}`), t(`moves.${move3}`), t(`moves.${move4}`)].join(', ');
+    [
+      t(`moves.${move1}`),
+      t(`moves.${move2}`),
+      t(`moves.${move3}`),
+      t(`moves.${move4}`),
+    ].join(', ');
   const GenderCell = ({ gender }) => t(`genders.${gender}`);
   const StatNatureCell = ({ statNature }) => t(`natures.${statNature}`);
   const ActionsCell = ({ id }) => (
     <>
       <IconButton
         aria-label="view"
-        onClick={() => history.push(createPokemonRoute(ownerId, collectionId, id))}
+        onClick={() =>
+          history.push(createPokemonRoute(ownerId, collectionId, id))
+        }
       >
         <VisibilityIcon />
       </IconButton>

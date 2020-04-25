@@ -8,11 +8,11 @@ export const PokemonSprite = ({ id }) => {
 
   if (id <= 0) return null;
 
-  const itemName = t(`species.${id}`);
-  const altText = `Pokemon - ${itemName}`;
+  const pokemonName = t(`species.${id}`);
+  const altText = `Pokemon - ${pokemonName}`;
 
   return (
-    <Tooltip title={itemName}>
+    <Tooltip title={pokemonName}>
       <img src={getPKMSprite(id)} alt={altText} />
     </Tooltip>
   );
