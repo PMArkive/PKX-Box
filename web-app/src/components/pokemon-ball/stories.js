@@ -1,10 +1,10 @@
-import React from "react";
-import { PokemonBall } from "./index";
-import { withKnobs, number } from "@storybook/addon-knobs";
+import React from 'react';
+import { PokemonBall } from './index';
+import { withKnobs, number } from '@storybook/addon-knobs';
 
 export default {
-  title: "PokemonBall",
+  title: 'PokemonBall',
   decorators: [withKnobs],
 };
 
-export const withText = () => <PokemonBall id={number("id", 1)} />;
+export const withText = () => <PokemonBall id={number('id', 1)} />;

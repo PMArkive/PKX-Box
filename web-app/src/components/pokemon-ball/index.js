@@ -1,7 +1,7 @@
-import React from "react";
-import Tooltip from "@material-ui/core/Tooltip";
-import { getBallSprite } from "../../utils/get-sprite-url";
-import { useTranslation } from "react-i18next";
+import React from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
+import { getBallSprite } from '../../utils/get-sprite-url';
+import { useTranslation } from 'react-i18next';
 
 export const PokemonBall = ({ id }) => {
   const { t } = useTranslation();
