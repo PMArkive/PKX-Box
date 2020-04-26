@@ -30,7 +30,15 @@ app.get('/discord', async (req, res) => {
     },
   );
 
-  res.cookie('jwt', signedUser, { maxAge: 900000, httpOnly: true });
+  const now = new Date(Date.now());
+  now.setHours(now.getHours() + process.env.JWT_COOKIE_EXPIRATION_HOURS);
+
+  res.cookie('jwt', signedUser, {
+    expires: now,
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict',
+  });
   res.redirect(process.env.REDIRECT_URL);
 });
 
