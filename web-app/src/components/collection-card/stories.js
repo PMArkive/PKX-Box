@@ -2,9 +2,7 @@ import React from 'react';
 import { UnconnectedCollectionsCard as CollectionCard } from './index';
 import { action } from '@storybook/addon-actions';
 import { withKnobs, text, boolean, object } from '@storybook/addon-knobs';
-import { BrowserRouter } from 'react-router-dom';
-
-const reactRouterDecorator = (storyFn) => <BrowserRouter>{storyFn()}</BrowserRouter>;
+import { reactRouterDecorator } from '../../../.storybook/decorators/react-router';
 
 export default {
   title: 'CollectionCard',

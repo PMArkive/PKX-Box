@@ -6,6 +6,8 @@ const oauth = new DiscordOAuth2();
 
 export const app = express();
 
+const jwtExpirationHours = parseInt(process.env.JWT_EXPIRATION_HOURS);
+
 const exchangeCodeForUser = async code => {
   const { access_token } = await oauth.tokenRequest({
     code,
@@ -27,11 +29,12 @@ app.get('/discord', async (req, res) => {
     process.env.JWT_SECRET.replace(/\\n/g, '\n'),
     {
       algorithm: 'RS256',
+      expiresIn: `${jwtExpirationHours}h`,
     },
   );
 
   const now = new Date(Date.now());
-  now.setHours(now.getHours() + process.env.JWT_COOKIE_EXPIRATION_HOURS);
+  now.setHours(now.getHours() + jwtExpirationHours);
 
   res.cookie('jwt', signedUser, {
     expires: now,
@@ -40,6 +43,11 @@ app.get('/discord', async (req, res) => {
     sameSite: 'strict',
   });
   res.redirect(process.env.REDIRECT_URL);
+});
+
+app.post('/logout', (req, res) => {
+  res.clearCookie('jwt');
+  res.send('Success!');
 });
 
 app.get('/', (req, res) => {

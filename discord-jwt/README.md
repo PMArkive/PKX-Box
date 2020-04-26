@@ -26,6 +26,7 @@ By putting this behind an API Gateway with other services, any request made to a
 - DISCORD_REDIRECT_URI - Discord redirect uri
 - REDIRECT_URL - redirect url after the user has successfully logged in
 - JWT_SECRET - secret or key to sign the JWT
+- JWT_EXPIRATION_HOURS - hours until the jwt cookie expires
 
 ## Primary tools used
 

@@ -7,11 +7,13 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useQuery } from '@apollo/react-hooks';
-import { GET_USER_INFO } from '../../graphql/queries/user';
-import { useTranslation } from 'react-i18next';
-import { createCollectionListRoute } from '../../routes';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { GET_USER_INFO } from '../../graphql/queries/user';
 import { generalConfig } from '../../config';
+import { UserMenu } from '../user-menu';
+import { createCollectionListRoute } from '../../routes';
+import { useToast } from '../toast';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,34 +25,43 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
-  userButton: {
-    textTransform: 'none',
-  },
 }));
 
 export const AppBar = ({ className, toggleNavDrawer }) => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const history = useHistory();
   const { loading, error, data } = useQuery(GET_USER_INFO);
+  const history = useHistory();
+  const setToast = useToast();
   const user = data?.viewer;
   const loggedInUserId = user?.id || null;
   const isLoggedIn = loggedInUserId !== null;
   const displayName = `${user?.discordUsername}#${user?.discordDiscriminator}`;
+  const navigateToAccount = () =>
+    history.push(createCollectionListRoute(loggedInUserId));
+  const handleLogout = async () => {
+    try {
+      await fetch('/logout', {
+        method: 'POST',
+        credentials: 'same-origin',
+      });
+      window.location.href = '/';
+    } catch (error) {
+      setToast('Error logging out', 'error', true);
+    }
+  };
   const userDisplay =
     loading || error || !isLoggedIn ? (
       <Button color="inherit" href={generalConfig.loginUrl}>
         Login
       </Button>
     ) : (
-      <Button
-        color="inherit"
-        component="a"
-        className={classes.userButton}
-        onClick={() => history.push(createCollectionListRoute(loggedInUserId))}
-      >
-        <Typography variant="h6">{displayName}</Typography>
-      </Button>
+      <UserMenu
+        userId={loggedInUserId}
+        displayName={displayName}
+        onClickAccount={navigateToAccount}
+        onClickLogout={handleLogout}
+      />
     );
 
   return (
