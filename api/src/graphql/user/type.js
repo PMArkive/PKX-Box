@@ -3,6 +3,7 @@ import { gql } from 'apollo-server-express';
 export const UserType = gql`
   type User {
     id: DiscordId!
+    loginExpiration: Int!
     discordUsername: String
     discordDiscriminator: String
     collection(collectionId: FirestoreId!): Collection

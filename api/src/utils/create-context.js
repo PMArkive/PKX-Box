@@ -15,6 +15,7 @@ export const createContext = async ({ req }) => {
           ...user,
           discordUsername: user.username,
           discordDiscriminator: user.discriminator,
+          loginExpiration: user.exp,
         },
       };
   }

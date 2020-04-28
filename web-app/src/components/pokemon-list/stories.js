@@ -1,9 +1,7 @@
 import React from 'react';
 import { PokemonList } from './index';
 import { withKnobs, boolean, text } from '@storybook/addon-knobs';
-import { BrowserRouter } from 'react-router-dom';
-
-const reactRouterDecorator = (storyFn) => <BrowserRouter>{storyFn()}</BrowserRouter>;
+import { reactRouterDecorator } from '../../../.storybook/decorators/react-router';
 
 export default {
   title: 'PokemonList',
