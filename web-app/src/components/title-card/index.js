@@ -7,6 +7,10 @@ import { HoverCard } from '../hover-card';
 
 const useStyles = makeStyles({
   card: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    justifyContent: 'space-between',
     minWidth: 275,
   },
 });
