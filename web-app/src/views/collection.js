@@ -28,7 +28,9 @@ export const CollectionView = ({ match }) => {
         const user = previousResult?.user || {};
         const collection = user?.collection || {};
         const newPokemonList =
-          collection?.pokemonList?.filter((pokemon) => pokemon.id !== deletedPokemon?.id) || [];
+          collection?.pokemonList?.filter(
+            (pokemon) => pokemon.id !== deletedPokemon?.id,
+          ) || [];
 
         return {
           ...previousResult,
@@ -47,7 +49,8 @@ export const CollectionView = ({ match }) => {
       setToast('Error deleting PKX', 'error', true);
     },
   });
-  const onDeletePokemon = (pokemonId) => deletePokemon({ variables: { collectionId, pokemonId } });
+  const onDeletePokemon = (pokemonId) =>
+    deletePokemon({ variables: { collectionId, pokemonId } });
   const collection = data?.user?.collection || {};
 
   return (

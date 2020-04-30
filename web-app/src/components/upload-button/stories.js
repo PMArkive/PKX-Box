@@ -11,7 +11,11 @@ export default {
 
 export const withMaterialButton = () => {
   return (
-    <UploadButton id="test" onUpload={action('onUpload')} multiple={boolean('multiple', false)}>
+    <UploadButton
+      id="test"
+      onUpload={action('onUpload')}
+      multiple={boolean('multiple', false)}
+    >
       <Button variant="contained" color="primary">
         Upload!
       </Button>

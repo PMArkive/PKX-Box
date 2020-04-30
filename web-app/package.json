@@ -34,7 +34,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build-storybook": "build-storybook -s public",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "prettier": "prettier --write 'src/**'"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -62,6 +63,7 @@
     "eslint-plugin-babel": "^5.3.0",
     "eslint-plugin-react": "^7.17.0",
     "graphql-tools": "^4.0.6",
+    "prettier": "^2.0.5",
     "react-apollo": "^3.1.3"
   }
 }

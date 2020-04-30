@@ -80,7 +80,9 @@ export const client = new ApolloClient({
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
           ),
         );
-      const errorMessage = networkError ? `[Network error]: ${networkError}` : 'API errors';
+      const errorMessage = networkError
+        ? `[Network error]: ${networkError}`
+        : 'API errors';
       if (networkError) console.log(errorMessage);
       client.mutate({
         mutation: SET_TOAST,

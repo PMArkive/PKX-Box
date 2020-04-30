@@ -23,7 +23,13 @@ const useStyles = makeStyles({
   },
 });
 
-const CollectionCardActions = ({ id, ownerId, isViewerOwner, onUploadPKX, onClickEdit }) => {
+const CollectionCardActions = ({
+  id,
+  ownerId,
+  isViewerOwner,
+  onUploadPKX,
+  onClickEdit,
+}) => {
   const history = useHistory();
   const onClickView = () => history.push(createCollectionRoute(ownerId, id));
   const ownerButtons = isViewerOwner ? (
@@ -41,7 +47,12 @@ const CollectionCardActions = ({ id, ownerId, isViewerOwner, onUploadPKX, onClic
 
   return (
     <>
-      <Button component="a" variant="outlined" color="primary" onClick={onClickView}>
+      <Button
+        component="a"
+        variant="outlined"
+        color="primary"
+        onClick={onClickView}
+      >
         View
       </Button>
       {ownerButtons}
@@ -96,7 +107,11 @@ export const UnconnectedCollectionsCard = ({
   );
 };
 
-export const CollectionCard = ({ ownerId, collection, onCollectionMutation }) => {
+export const CollectionCard = ({
+  ownerId,
+  collection,
+  onCollectionMutation,
+}) => {
   const collectionId = collection?.id;
   const classes = useStyles();
   const [isEditMode, setIsEditMode] = React.useState(false);
@@ -117,30 +132,41 @@ export const CollectionCard = ({ ownerId, collection, onCollectionMutation }) =>
   });
   const onUploadPKX = (pkxs) =>
     uploadPKX({
-      variables: { collectionId, base64PKXs: pkxs.map(convertArrayBufferToBase64) },
+      variables: {
+        collectionId,
+        base64PKXs: pkxs.map(convertArrayBufferToBase64),
+      },
     });
-  const [updateCollection, { loading: updateCollectionLoading }] = useMutation(UPDATE_COLLECTION, {
-    onCompleted: closeEditMode,
-  });
-  const onUpdateCollection = ({ name, isPublic }) =>
-    updateCollection({
-      variables: { collectionId, newCollectionName: name, makeCollectionPublic: isPublic },
-    });
-  const [onDeleteCollection, { loading: deleteCollectionLoading }] = useMutation(
-    DELETE_COLLECTION,
+  const [updateCollection, { loading: updateCollectionLoading }] = useMutation(
+    UPDATE_COLLECTION,
     {
-      variables: { collectionId },
-      onCompleted: ({ deletedCollection }) => {
-        onCollectionMutation(deletedCollection?.id, null);
-        closeEditMode();
-        setToast('Deleted collection', 'success', true);
-      },
-      onError: () => {
-        setToast('Error deleting collection', 'error', true);
-      },
+      onCompleted: closeEditMode,
     },
   );
-  const isLoading = uploadPKXLoading || updateCollectionLoading || deleteCollectionLoading;
+  const onUpdateCollection = ({ name, isPublic }) =>
+    updateCollection({
+      variables: {
+        collectionId,
+        newCollectionName: name,
+        makeCollectionPublic: isPublic,
+      },
+    });
+  const [
+    onDeleteCollection,
+    { loading: deleteCollectionLoading },
+  ] = useMutation(DELETE_COLLECTION, {
+    variables: { collectionId },
+    onCompleted: ({ deletedCollection }) => {
+      onCollectionMutation(deletedCollection?.id, null);
+      closeEditMode();
+      setToast('Deleted collection', 'success', true);
+    },
+    onError: () => {
+      setToast('Error deleting collection', 'error', true);
+    },
+  });
+  const isLoading =
+    uploadPKXLoading || updateCollectionLoading || deleteCollectionLoading;
 
   if (isLoading)
     return (

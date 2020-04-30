@@ -70,7 +70,11 @@ export const EditCollectionModal = ({
       onClose={onClose}
       className={classes.modalRoot}
     >
-      <TitleCard title="Edit Collection" className={classes.modalCard} cardActions={modalActions}>
+      <TitleCard
+        title="Edit Collection"
+        className={classes.modalCard}
+        cardActions={modalActions}
+      >
         <FormGroup>
           <TextField
             inputRef={nameTextFieldRef}

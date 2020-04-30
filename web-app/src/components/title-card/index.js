@@ -11,7 +11,10 @@ const useStyles = makeStyles({
   },
 });
 
-const ForwwardRefTitleCard = ({ title, children, cardActions, ...props }, ref) => {
+const ForwwardRefTitleCard = (
+  { title, children, cardActions, ...props },
+  ref,
+) => {
   const classes = useStyles();
 
   return (

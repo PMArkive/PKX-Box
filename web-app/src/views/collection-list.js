@@ -22,7 +22,9 @@ const useStyles = makeStyles({
 const updateCollection = (updateQuery, collectionId, updatedCollection) => {
   updateQuery((previousResult) => {
     const newCollections = previousResult?.user?.collections?.slice() || [];
-    const foundIndex = newCollections.findIndex(({ id }) => id === collectionId);
+    const foundIndex = newCollections.findIndex(
+      ({ id }) => id === collectionId,
+    );
     const updatedIndex = foundIndex > -1 ? foundIndex : newCollections.length;
 
     newCollections[updatedIndex] = updatedCollection;
@@ -44,8 +46,12 @@ export const CollectionListView = ({ match }) => {
   const { userId: parameterUserId } = match.params;
   const userId = parameterUserId || loggedInUserId;
   const classes = useStyles();
-  const [isCreateCollectionModalOpen, setIsCreateCollectionModalOpen] = React.useState(false);
-  const closeCreateCollectionModel = () => setIsCreateCollectionModalOpen(false);
+  const [
+    isCreateCollectionModalOpen,
+    setIsCreateCollectionModalOpen,
+  ] = React.useState(false);
+  const closeCreateCollectionModel = () =>
+    setIsCreateCollectionModalOpen(false);
   const openCreateCollectionModel = () => setIsCreateCollectionModalOpen(true);
   const { data, updateQuery, loading } = useQuery(GET_COLLECTION_NAMES, {
     variables: { userId },
@@ -54,7 +60,10 @@ export const CollectionListView = ({ match }) => {
     updateCollection(updateQuery, collectionId, updatedCollection);
   const [createCollection] = useMutation(CREATE_COLLECTION, {
     onCompleted: ({ newCollection }) => {
-      updateCollection(updateQuery, newCollection.id, { ...newCollection, pokemonList: [] });
+      updateCollection(updateQuery, newCollection.id, {
+        ...newCollection,
+        pokemonList: [],
+      });
       closeCreateCollectionModel();
     },
   });

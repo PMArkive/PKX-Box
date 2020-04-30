@@ -55,7 +55,9 @@ export const MainLayout = ({ children, loading, hasContentPadding = true }) => {
       <CircularProgress />
     </div>
   ) : (
-    <div className={[contentClass, classes.contentPadding].join(' ')}>{children}</div>
+    <div className={[contentClass, classes.contentPadding].join(' ')}>
+      {children}
+    </div>
   );
 
   return (
