@@ -8,14 +8,19 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_USER_INFO } from '../../graphql/queries/user';
 import { useTranslation } from 'react-i18next';
 import { createCollectionListRoute } from '../../routes';
+import { generalConfig } from '../../config';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     width: theme.mixins.navDrawer.width,
   },
   header: {
@@ -24,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
+  },
+  buildInfo: {
+    margin: '1rem',
   },
 }));
 
@@ -55,17 +63,25 @@ export const NavDrawer = ({ isOpen, onClose }) => {
       onClose={onClose}
       classes={{ paper: classes.root }}
     >
-      <div className={classes.header}>
-        <IconButton onClick={onClose}>
-          <ChevronLeftIcon />
-        </IconButton>
+      <div>
+        <div className={classes.header}>
+          <IconButton onClick={onClose}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+        <Divider />
+        <List>
+          <ListItem button onClick={onClickHome}>
+            <ListItemText>{t('Home')}</ListItemText>
+          </ListItem>
+        </List>
       </div>
-      <Divider />
-      <List>
-        <ListItem button onClick={onClickHome}>
-          <ListItemText>{t('Home')}</ListItemText>
-        </ListItem>
-      </List>
+      <div className={classes.buildInfo}>
+        <Typography variant="body1">Ver. {generalConfig.version}</Typography>
+        <Typography variant="body1">
+          Last updated: {generalConfig.buildDate}
+        </Typography>
+      </div>
     </Drawer>
   );
 };

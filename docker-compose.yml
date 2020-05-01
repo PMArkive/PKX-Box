@@ -58,6 +58,7 @@ services:
     environment:
       - REACT_APP_API=http://localhost:5000/graphql
       - REACT_APP_LOGIN_URL=http://localhost:3000/
+      - REACT_APP_VERSION=development
     entrypoint:
       - yarn
       - start

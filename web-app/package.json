@@ -30,7 +30,7 @@
   "scripts": {
     "storybook": "start-storybook -p 9009 -s public",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "export REACT_APP_BUILD_EPOCH=$(date +%s) && export REACT_APP_VERSION=$(node scripts/get-version.js) && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build-storybook": "build-storybook -s public",
