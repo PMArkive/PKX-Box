@@ -14,6 +14,7 @@ import { createCollectionRoute } from '../../routes';
 import { useToast } from '../toast';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
+import { generalConfig } from '../../config';
 
 const useStyles = makeStyles({
   spinnerContainer: {
@@ -122,7 +123,10 @@ export const CollectionCard = ({
     onCompleted: ({ uploadBase64PKXs }) => {
       onCollectionMutation(collectionId, {
         ...collection,
-        pokemonList: [...collection?.pokemonList, ...uploadBase64PKXs],
+        pokemonList: [...collection?.pokemonList, ...uploadBase64PKXs].slice(
+          0,
+          generalConfig.collectionPreviewPokemonLimit,
+        ),
       });
       setToast('Uploaded PKX!', 'success', true);
     },

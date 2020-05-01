@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { generalConfig } from '../../config';
 
 export const GET_COLLECTION_NAMES = gql`
   query userCollectionNames($userId: DiscordId!) {
@@ -8,7 +9,7 @@ export const GET_COLLECTION_NAMES = gql`
         name
         isPublic
         isViewerOwner
-        pokemonList(limit: 18) {
+        pokemonList(limit: ${generalConfig.collectionPreviewPokemonLimit}) {
           id
           species
         }
