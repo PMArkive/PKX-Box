@@ -77,7 +77,7 @@ export const NavDrawer = ({ isOpen, onClose }) => {
         </List>
       </div>
       <div className={classes.buildInfo}>
-        <Typography variant="body1">Ver. {generalConfig.version}</Typography>
+        <Typography variant="body1">Hash: {generalConfig.gitHash}</Typography>
         <Typography variant="body1">
           Last updated: {generalConfig.buildDate}
         </Typography>
