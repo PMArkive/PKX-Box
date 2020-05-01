@@ -36,7 +36,11 @@ const server = new ApolloServer({
     firestore: new FireStoreDataSource(),
   }),
   context: createContext,
-  validationRules: [createComplexityLimitRule(500, { objectCost: 1 })],
+  validationRules: [
+    createComplexityLimitRule(generalConfig.maxQueryComplexityCost, {
+      objectCost: generalConfig.objectQueryComplexityCost,
+    }),
+  ],
 });
 
 server.applyMiddleware({ app, path: '/graphql', cors: false });

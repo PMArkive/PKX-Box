@@ -7,4 +7,6 @@ export const generalConfig = {
   cryptoIVSize: Number(process.env.CRYPTO_IV_SIZE),
   collectionDeleteBatchSize: Number(process.env.COLLECTION_DELETE_BATCH_SIZE),
   corsOrigins: process.env.CORS_ORIGINS.split(','),
+  maxQueryComplexityCost: process.env.MAX_QUERY_COMPLEXITY_COST,
+  objectQueryComplexityCost: process.env.MAX_QUERY_OBJECT_COST,
 };
