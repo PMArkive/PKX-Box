@@ -14,6 +14,8 @@ This is the PKX-Box backend API that provides CRUD operations.
 - CRYPTO_IV_SIZE - initialization vector size. Example: 16
 - COLLECTION_DELETE_BATCH_SIZE - document batch size to use when deleting collections. Example: 50
 - CORS_ORIGINS - comma separated list of origins for the access-control-allow-origin cors header. Example: `http://localhost:3000,http://localhost:5000`
+- MAX_QUERY_COMPLEXITY_COST - limits the max query complexity to avoid a crafted query that kills the backend. Example: 2000
+- MAX_QUERY_OBJECT_COST - sets the complexity cost of an individual object. Example: 0
 
 ## Primary tools used
 
