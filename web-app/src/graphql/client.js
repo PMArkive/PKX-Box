@@ -106,7 +106,7 @@ client.query({ query: GET_USER_INFO }).then(({ data }) => {
   const loginExpiration = data?.viewer?.loginExpiration;
 
   if (loginExpiration !== null) {
-    const secondsUntilLogout = loginExpiration - Math.floor(Date.now() / 1000);
-    setTimeout(handleLogout, secondsUntilLogout);
+    const millisecondsecondsUntilLogout = loginExpiration * 1000 - Date.now();
+    setTimeout(handleLogout, millisecondsecondsUntilLogout);
   }
 });
