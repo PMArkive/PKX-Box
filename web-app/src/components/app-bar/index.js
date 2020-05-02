@@ -14,6 +14,7 @@ import { generalConfig } from '../../config';
 import { UserMenu } from '../user-menu';
 import { createCollectionListRoute } from '../../routes';
 import { useToast } from '../toast';
+import { handleLogout as logoutUser } from '../../utils/handle-logout';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +46,7 @@ export const AppBar = ({ className, toggleNavDrawer }) => {
         method: 'POST',
         credentials: 'same-origin',
       });
-      window.location.href = '/';
+      logoutUser();
     } catch (error) {
       setToast('Error logging out', 'error', true);
     }

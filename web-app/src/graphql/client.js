@@ -7,6 +7,8 @@ import { toIdValue } from 'apollo-utilities';
 import gql from 'graphql-tag';
 import { SET_TOAST } from './mutations/set-toast';
 import { generalConfig } from '../config';
+import { GET_USER_INFO } from './queries/user';
+import { handleLogout } from '../utils/handle-logout';
 
 const cache = new InMemoryCache({
   cacheRedirects: {
@@ -97,4 +99,14 @@ export const client = new ApolloClient({
   cache,
   typeDefs,
   resolvers,
+});
+
+// Super dirty way to handle this - should clean up in the future
+client.query({ query: GET_USER_INFO }).then(({ data }) => {
+  const loginExpiration = data?.viewer?.loginExpiration;
+
+  if (loginExpiration !== null) {
+    const secondsUntilLogout = loginExpiration - Math.floor(Date.now() / 1000);
+    setTimeout(handleLogout, secondsUntilLogout);
+  }
 });
