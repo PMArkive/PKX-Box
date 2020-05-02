@@ -33,7 +33,7 @@ export const AppBar = ({ className, toggleNavDrawer }) => {
   const { loading, error, data } = useQuery(GET_USER_INFO);
   const history = useHistory();
   const setToast = useToast();
-  const user = data?.viewer;
+  const user = data?.viewer?.user;
   const loggedInUserId = user?.id || null;
   const isLoggedIn = loggedInUserId !== null;
   const displayName = `${user?.discordUsername}#${user?.discordDiscriminator}`;

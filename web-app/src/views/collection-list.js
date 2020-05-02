@@ -41,7 +41,7 @@ const updateCollection = (updateQuery, collectionId, updatedCollection) => {
 
 export const CollectionListView = ({ match }) => {
   const { data: user } = useQuery(GET_USER_INFO);
-  const loggedInUserId = user?.viewer?.id || null;
+  const loggedInUserId = user?.viewer?.user?.id || null;
   const isLoggedIn = loggedInUserId !== null;
   const { userId: parameterUserId } = match.params;
   const userId = parameterUserId || loggedInUserId;

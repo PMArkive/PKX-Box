@@ -44,7 +44,7 @@ export const NavDrawer = ({ isOpen, onClose }) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const drawerVariant = isSmallScreen ? 'temporary' : 'persistent';
   const onClickHome = () => {
-    const homeRoute = createCollectionListRoute(data?.viewer?.id);
+    const homeRoute = createCollectionListRoute(data?.viewer?.user?.id);
 
     if (isSmallScreen) {
       onClose();

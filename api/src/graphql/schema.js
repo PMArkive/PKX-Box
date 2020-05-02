@@ -19,6 +19,8 @@ import {
 import { CollectionInputType } from './collection/input-type';
 import { LoginCheckType } from './directives';
 import { createStringSizeScalar } from './scalars';
+import { getLogin } from './login/resolver';
+import { LoginType } from './login/type';
 
 const rootTypes = gql`
   scalar FirestoreId
@@ -41,6 +43,7 @@ const rootTypes = gql`
 export const typeDefs = [
   rootTypes,
   LoginCheckType,
+  LoginType,
   PokemonType,
   PokemonInputType,
   CollectionType,
@@ -62,7 +65,7 @@ export const resolvers = {
     maxLength: 40,
   }),
   Query: {
-    viewer: getUserFromContext,
+    viewer: getLogin,
     user: fetchUser,
   },
   Mutation: {
@@ -70,6 +73,9 @@ export const resolvers = {
     deletePokemon,
     upsertCollection,
     deleteCollection,
+  },
+  Login: {
+    user: getUserFromContext,
   },
   User: {
     collection: fetchCollection,
