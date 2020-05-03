@@ -58,14 +58,34 @@ const basePokemon = {
 };
 
 export const withContent = () => {
-  const pokemonList = new Array(100).fill(basePokemon);
+  // We can't use hooks in a story without an enclosing component
+  const Story = () => {
+    const createPokemon = (count, offset) =>
+      new Array(count)
+        .fill(0)
+        .map((_, index) => ({ ...basePokemon, species: index + offset }));
+    const defaultPokemonList = createPokemon(50, 0);
+    const [pokemonList, setPokemonList] = React.useState(defaultPokemonList);
+    const addPokemonToList = ({ startIndex, stopIndex }) => {
+      const count = stopIndex - startIndex;
+      const newPokemon = createPokemon(count, pokemonList.length);
+      setPokemonList([...pokemonList, ...newPokemon]);
+    };
 
-  return (
-    <PokemonList
-      isViwerOwner={boolean('isViewerOnwer', true)}
-      userId={text('userId', '123456789')}
-      collectionId={text('collectionId', '123456789')}
-      pokemonList={pokemonList}
-    />
-  );
+    return (
+      <div style={{ width: '100%', height: '100vh' }}>
+        <PokemonList
+          isViewerOwner={boolean('isViewerOwner', true)}
+          collectionId={text('collectionId', '123456789')}
+          isLoading={boolean('isLoading', false)}
+          loadMoreRows={addPokemonToList}
+          pokemonList={pokemonList}
+          remoteRowCount={300}
+          ownerId={text('userId', '123456789')}
+        />
+      </div>
+    );
+  };
+
+  return <Story />;
 };

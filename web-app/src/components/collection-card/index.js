@@ -72,7 +72,7 @@ export const UnconnectedCollectionsCard = ({
   onUploadPKX,
   onUpdateCollection,
   onDeleteCollection,
-  pokemonList,
+  pokemonConnection,
   isEditMode,
   openEditMode,
   closeEditMode,
@@ -100,7 +100,7 @@ export const UnconnectedCollectionsCard = ({
         isDeleteable
       />
       <TitleCard title={cardTitle} cardActions={cardActions}>
-        {pokemonList?.map((pokemon) => (
+        {pokemonConnection?.pokemonList?.map((pokemon) => (
           <PokemonSprite id={pokemon?.species} key={pokemon?.id} />
         ))}
       </TitleCard>
@@ -121,12 +121,18 @@ export const CollectionCard = ({
   const setToast = useToast();
   const [uploadPKX, { loading: uploadPKXLoading }] = useMutation(UPLOAD_PKX, {
     onCompleted: ({ uploadBase64PKXs }) => {
+      const pokemonConnection = collection?.pokemonConnection || {};
+      const pokemonList = pokemonConnection.pokemonList || [];
+
       onCollectionMutation(collectionId, {
         ...collection,
-        pokemonList: [...collection?.pokemonList, ...uploadBase64PKXs].slice(
-          0,
-          generalConfig.collectionPreviewPokemonLimit,
-        ),
+        pokemonConnection: {
+          ...pokemonConnection,
+          pokemonList: [...pokemonList, ...uploadBase64PKXs].slice(
+            0,
+            generalConfig.collectionPreviewPokemonLimit,
+          ),
+        },
       });
       setToast('Uploaded PKX!', 'success', true);
     },

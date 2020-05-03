@@ -6,7 +6,12 @@ export const CollectionType = gql`
     name: StringMaxLength40
     isPublic: Boolean
     isViewerOwner: Boolean
-    pokemon(pokemonId: FirestoreId!): Pokemon
-    pokemonList(limit: Int): [Pokemon]
+    pokemon(pokemonId: String!): Pokemon
+    pokemonConnection(
+      "Number of pokemon to fetch"
+      first: Int!
+      "Cursor - leave empty to start paginating"
+      after: String = ""
+    ): PokemonConnection!
   }
 `;

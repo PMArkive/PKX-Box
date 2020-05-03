@@ -2,6 +2,7 @@ import DataLoader from 'dataloader';
 import { DataSource } from 'apollo-datasource';
 import { userCollection, mapFirestoreArray, db } from '../services/firestore';
 import { decrypt } from '../utils/crypto';
+import { parseNodeCursor } from '../utils/cursor';
 
 const formatFirestorePKX = (pkxs, callingUserId, getOwnerId) => {
   return mapFirestoreArray(pkxs, (pkx, index) => {
@@ -141,13 +142,20 @@ export class FireStoreDataSource extends DataSource {
     });
   }
 
-  async getPokemonListByCollectionId(userId, collectionId, limit) {
+  async getPokemonListByCollectionId(userId, collectionId, first, after) {
+    const { createdAt, id: pokemonId } = after ? parseNodeCursor(after) : {};
     const query = userCollection
       .doc(userId)
       .collection('collections')
       .doc(collectionId)
-      .collection('pkx');
-    const pkxs = limit ? await query.limit(limit).get() : await query.get();
+      .collection('pkx')
+      .orderBy('createdAt')
+      .orderBy('__name__')
+      .limit(first);
+    const pkxs =
+      createdAt && pokemonId
+        ? await query.startAfter(createdAt, pokemonId).get()
+        : await query.get();
 
     return formatFirestorePKX(pkxs, this.callingUserId, () => userId);
   }

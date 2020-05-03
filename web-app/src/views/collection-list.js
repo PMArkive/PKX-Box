@@ -21,19 +21,22 @@ const useStyles = makeStyles({
 
 const updateCollection = (updateQuery, collectionId, updatedCollection) => {
   updateQuery((previousResult) => {
-    const newCollections = previousResult?.user?.collections?.slice() || [];
-    const foundIndex = newCollections.findIndex(
+    const collectionsCopy = previousResult?.user?.collections?.slice() || [];
+    const foundIndex = collectionsCopy.findIndex(
       ({ id }) => id === collectionId,
     );
-    const updatedIndex = foundIndex > -1 ? foundIndex : newCollections.length;
+    const updatedIndex = foundIndex > -1 ? foundIndex : collectionsCopy.length;
 
-    newCollections[updatedIndex] = updatedCollection;
+    collectionsCopy[updatedIndex] = updatedCollection;
+    const newCollections = collectionsCopy.filter(
+      (collection) => collection !== null,
+    );
 
     return {
       ...previousResult,
       user: {
         ...previousResult?.user,
-        collections: newCollections.filter((collection) => collection !== null),
+        collections: newCollections,
       },
     };
   });
@@ -55,15 +58,13 @@ export const CollectionListView = ({ match }) => {
   const openCreateCollectionModel = () => setIsCreateCollectionModalOpen(true);
   const { data, updateQuery, loading } = useQuery(GET_COLLECTION_NAMES, {
     variables: { userId },
+    fetchPolicy: 'cache-and-network',
   });
   const onCollectionMutation = (collectionId, updatedCollection) =>
     updateCollection(updateQuery, collectionId, updatedCollection);
   const [createCollection] = useMutation(CREATE_COLLECTION, {
     onCompleted: ({ newCollection }) => {
-      updateCollection(updateQuery, newCollection.id, {
-        ...newCollection,
-        pokemonList: [],
-      });
+      updateCollection(updateQuery, newCollection.id, newCollection);
       closeCreateCollectionModel();
     },
   });

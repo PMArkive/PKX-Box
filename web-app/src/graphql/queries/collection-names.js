@@ -9,9 +9,11 @@ export const GET_COLLECTION_NAMES = gql`
         name
         isPublic
         isViewerOwner
-        pokemonList(limit: ${generalConfig.collectionPreviewPokemonLimit}) {
-          id
-          species
+        pokemonConnection(first: ${generalConfig.collectionPreviewPokemonLimit}) {
+          pokemonList {
+            id
+            species
+          }
         }
       }
     }

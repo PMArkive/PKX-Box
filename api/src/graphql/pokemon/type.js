@@ -102,4 +102,9 @@ export const PokemonType = gql`
     version: Int
     wasEgg: Boolean
   }
+
+  type PokemonConnection {
+    cursor: String
+    pokemonList: [Pokemon]
+  }
 `;

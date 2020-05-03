@@ -19,6 +19,10 @@ export const upsertCollection = async (
     : // Passing undefined to `doc` throws an error
       collectionsRef.doc();
 
+  if (!collectionId) {
+    collection.createdAt = Date.now();
+  }
+
   await collectionRef.set(collection);
 
   return { id: collectionRef.id, ownerId: user.id, ...collection };

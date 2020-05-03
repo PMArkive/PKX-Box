@@ -2,6 +2,7 @@ import { db, userCollection } from '../../services/firestore';
 import { PKHEX_PROP_MAP } from './type';
 import { parsePKX } from '../../services/pkhex-api';
 import { encrypt } from '../../utils/crypto';
+import { getCursorFromNode } from '../../utils/cursor';
 
 export const uploadBase64PKXs = async (
   parent,
@@ -35,6 +36,7 @@ export const uploadBase64PKXs = async (
 
     // For older gens that don't have gigantamax
     pkx.canGigantamax = !!pkx.canGigantamax;
+    pkx.createdAt = Date.now();
     pkx.boxData = encrypt(Buffer.from(parsedPKX.DecryptedBoxData, 'base64'));
 
     batch.set(newDocRef, pkx);
@@ -68,14 +70,25 @@ export const deletePokemon = async (
 
 export const fetchPokemonList = async (
   { ownerId, id: collectionId },
-  { limit },
+  { first, after },
   { dataSources },
 ) => {
-  return dataSources.firestore.getPokemonListByCollectionId(
+  const pokemonList = await dataSources.firestore.getPokemonListByCollectionId(
     ownerId,
     collectionId,
-    limit,
+    first,
+    after,
   );
+
+  if (pokemonList.length === 0) return { pokemonList, cursor: null };
+
+  const lastPokemon = pokemonList[pokemonList.length - 1];
+  const cursor = getCursorFromNode(lastPokemon);
+
+  return {
+    pokemonList,
+    cursor,
+  };
 };
 
 export const fetchPokemon = (

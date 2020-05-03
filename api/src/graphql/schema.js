@@ -83,7 +83,7 @@ export const resolvers = {
   },
   Collection: {
     pokemon: fetchPokemon,
-    pokemonList: fetchPokemonList,
+    pokemonConnection: fetchPokemonList,
     isViewerOwner: ({ ownerId }, args, { user }) => ownerId === user?.id,
   },
 };
