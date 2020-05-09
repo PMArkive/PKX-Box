@@ -71,6 +71,9 @@ export const CollectionView = ({ match }) => {
           },
         };
       });
+      const newCollectionLimit =
+        collectionPokemonLimit > 0 ? collectionPokemonLimit - 1 : 0;
+      setCollectionPokemonLimit(newCollectionLimit);
       setToast('Deleted PKX', 'success', true);
     },
     onError: () => {
