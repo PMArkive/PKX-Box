@@ -2,7 +2,7 @@ import { db, userCollection } from '../../services/firestore';
 import { PKHEX_PROP_MAP } from './type';
 import { parsePKX } from '../../services/pkhex-api';
 import { encrypt } from '../../utils/crypto';
-import { getCursorFromNode } from '../../utils/cursor';
+import { serializeCursor } from '../../utils/cursor';
 
 export const uploadBase64PKXs = async (
   parent,
@@ -70,7 +70,7 @@ export const deletePokemon = async (
 
 export const fetchPokemonList = async (
   { ownerId, id: collectionId },
-  { first, after },
+  { first, after, orderBy },
   { dataSources },
 ) => {
   const pokemonList = await dataSources.firestore.getPokemonListByCollectionId(
@@ -78,12 +78,13 @@ export const fetchPokemonList = async (
     collectionId,
     first,
     after,
+    orderBy,
   );
 
   if (pokemonList.length === 0) return { pokemonList, cursor: null };
 
   const lastPokemon = pokemonList[pokemonList.length - 1];
-  const cursor = getCursorFromNode(lastPokemon);
+  const cursor = serializeCursor(orderBy, lastPokemon);
 
   return {
     pokemonList,

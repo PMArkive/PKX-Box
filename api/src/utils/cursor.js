@@ -1,16 +1,27 @@
-export const getCursorFromNode = node => {
-  return Buffer.from(
-    `${node.id}|${node.createdAt.toString()}`,
-    'utf8',
-  ).toString('base64');
+const parseBoolean = bool => bool === 'true';
+
+const cursorDeserializers = {
+  species: parseInt,
+  ball: parseInt,
+  isShiny: parseBoolean,
+  isEgg: parseBoolean,
+  canGigantamax: parseBoolean,
+  isLegal: parseBoolean,
 };
 
-export const parseNodeCursor = cursor => {
-  const [id, createdAt] = Buffer.from(cursor, 'base64')
+export const deserializeCursor = (orderBy, serializedCursor) => {
+  const [orderValue, id] = Buffer.from(serializedCursor, 'base64')
     .toString('utf8')
     .split('|');
+  const deserializer = cursorDeserializers?.[orderBy] || Boolean;
   return {
-    createdAt: parseInt(createdAt, 10),
     id,
+    orderValue: deserializer(orderValue),
   };
+};
+
+export const serializeCursor = (orderBy, node) => {
+  const orderValue = node?.[orderBy]?.toString();
+  const cursor = `${orderValue}|${node.id}`;
+  return Buffer.from(cursor, 'utf8').toString('base64');
 };
