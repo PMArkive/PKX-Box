@@ -117,6 +117,11 @@ export const columns = [
     cell: CanGigantamaxCell,
   },
   {
+    name: 'Verified Legal',
+    width: 150,
+    cell: VerifedLegalCell,
+  },
+  {
     name: 'Ability',
     header: 'Ability',
     width: 100,
@@ -158,11 +163,6 @@ export const columns = [
     name: 'EVs',
     width: 150,
     cell: EVsCell,
-  },
-  {
-    name: 'Verified Legal',
-    width: 150,
-    cell: VerifedLegalCell,
   },
   { name: 'genNumber', header: 'Generation', width: 100 },
   { name: 'otName', header: 'OT Name', width: 100 },
