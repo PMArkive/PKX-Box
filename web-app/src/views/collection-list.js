@@ -9,7 +9,7 @@ import { GET_COLLECTION_NAMES } from '../graphql/queries/collection-names';
 import { CollectionCard } from '../components/collection-card';
 import { EditCollectionModal } from '../components/edit-collection-modal';
 import { CREATE_COLLECTION } from '../graphql/mutations/create-collection';
-import { GET_USER_INFO } from '../graphql/queries/user';
+import { GET_VIEWER_INFO } from '../graphql/queries/user';
 
 const useStyles = makeStyles({
   fab: {
@@ -43,7 +43,7 @@ const updateCollection = (updateQuery, collectionId, updatedCollection) => {
 };
 
 export const CollectionListView = ({ match }) => {
-  const { data: user } = useQuery(GET_USER_INFO);
+  const { data: user } = useQuery(GET_VIEWER_INFO);
   const loggedInUserId = user?.viewer?.user?.id || null;
   const isLoggedIn = loggedInUserId !== null;
   const { userId: parameterUserId } = match.params;

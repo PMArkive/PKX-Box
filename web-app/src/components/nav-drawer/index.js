@@ -11,7 +11,7 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
-import { GET_USER_INFO } from '../../graphql/queries/user';
+import { GET_VIEWER_INFO } from '../../graphql/queries/user';
 import { useTranslation } from 'react-i18next';
 import { createCollectionListRoute } from '../../routes';
 import { generalConfig } from '../../config';
@@ -40,7 +40,7 @@ export const NavDrawer = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const history = useHistory();
-  const { data } = useQuery(GET_USER_INFO);
+  const { data } = useQuery(GET_VIEWER_INFO);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const drawerVariant = isSmallScreen ? 'temporary' : 'persistent';
   const onClickHome = () => {

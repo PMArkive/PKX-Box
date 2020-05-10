@@ -9,12 +9,12 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { useQuery } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { GET_USER_INFO } from '../../graphql/queries/user';
+import { GET_VIEWER_INFO } from '../../graphql/queries/user';
 import { generalConfig } from '../../config';
 import { UserMenu } from '../user-menu';
 import { createCollectionListRoute } from '../../routes';
 import { useToast } from '../toast';
-import { handleLogout as logoutUser } from '../../utils/handle-logout';
+import { handleLogout as logoutUser } from '../../utils/login';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 export const AppBar = ({ className, toggleNavDrawer }) => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const { loading, error, data } = useQuery(GET_USER_INFO);
+  const { loading, error, data } = useQuery(GET_VIEWER_INFO);
   const history = useHistory();
   const setToast = useToast();
   const user = data?.viewer?.user;

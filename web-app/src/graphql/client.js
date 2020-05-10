@@ -7,8 +7,12 @@ import { toIdValue } from 'apollo-utilities';
 import gql from 'graphql-tag';
 import { SET_TOAST } from './mutations/set-toast';
 import { generalConfig } from '../config';
-import { GET_USER_INFO } from './queries/user';
-import { handleLogout } from '../utils/handle-logout';
+import { GET_VIEWER_INFO } from './queries/user';
+import {
+  handleLogout,
+  setLoginExpiration,
+  getLoginExpiration,
+} from '../utils/login';
 
 const cache = new InMemoryCache({
   cacheRedirects: {
@@ -73,40 +77,55 @@ const resolvers = {
   },
 };
 
+class AuthCheckLink extends ApolloLink {
+  request(operation, forward) {
+    const loginExpiration = getLoginExpiration();
+
+    if (loginExpiration !== null && Date.now() >= loginExpiration) {
+      handleLogout();
+    }
+
+    return forward(operation);
+  }
+}
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+      ),
+    );
+  }
+
+  const errorMessage = networkError
+    ? `[Network error]: ${networkError}`
+    : 'API errors';
+
+  if (networkError) console.log(errorMessage);
+
+  client.mutate({
+    mutation: SET_TOAST,
+    variables: { text: errorMessage, severity: 'error', isOpen: true },
+  });
+});
+
+const httpLink = new HttpLink({
+  uri: generalConfig.apiUrl,
+  credentials: 'same-origin',
+});
+
 export const client = new ApolloClient({
-  link: ApolloLink.from([
-    onError(({ graphQLErrors, networkError }) => {
-      if (graphQLErrors)
-        graphQLErrors.forEach(({ message, locations, path }) =>
-          console.log(
-            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-          ),
-        );
-      const errorMessage = networkError
-        ? `[Network error]: ${networkError}`
-        : 'API errors';
-      if (networkError) console.log(errorMessage);
-      client.mutate({
-        mutation: SET_TOAST,
-        variables: { text: errorMessage, severity: 'error', isOpen: true },
-      });
-    }),
-    new HttpLink({
-      uri: generalConfig.apiUrl,
-      credentials: 'same-origin',
-    }),
-  ]),
+  link: ApolloLink.from([new AuthCheckLink(), errorLink, httpLink]),
   cache,
   typeDefs,
   resolvers,
 });
 
-// Super dirty way to handle this - should clean up in the future
-client.query({ query: GET_USER_INFO }).then(({ data }) => {
+client.query({ query: GET_VIEWER_INFO }).then(({ data }) => {
   const loginExpiration = data?.viewer?.loginExpiration;
 
   if (loginExpiration !== null) {
-    const millisecondsecondsUntilLogout = loginExpiration * 1000 - Date.now();
-    setTimeout(handleLogout, millisecondsecondsUntilLogout);
+    setLoginExpiration(loginExpiration * 1000);
   }
 });
