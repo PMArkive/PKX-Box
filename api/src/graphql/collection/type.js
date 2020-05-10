@@ -15,7 +15,7 @@ export const CollectionType = gql`
     name: StringMaxLength40
     isPublic: Boolean
     isViewerOwner: Boolean
-    pokemon(pokemonId: String!): Pokemon
+    pokemon(pokemonId: FirestoreId!): Pokemon
     pokemonConnection(
       "Number of pokemon to fetch"
       first: Int!
