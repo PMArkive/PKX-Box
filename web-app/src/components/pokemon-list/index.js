@@ -1,9 +1,45 @@
 import React from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 import TableCell from '@material-ui/core/TableCell';
-import { AutoSizer } from 'react-virtualized';
+import { AutoSizer, MultiGrid, ScrollSync } from 'react-virtualized';
 import { InfiniteLoadingGrid } from '../infinite-loading-grid';
 import { columns } from './columns';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles({
+  container: {
+    // Overwrite react virtualized styles
+    '& :first-child > div > .ReactVirtualized__Grid': {
+      // I'm against !important, but this seemed to be the better than alternatives this one time
+      overflowX: 'hidden !important',
+      borderBottom: '1px solid rgba(224, 224, 224, 1)',
+    },
+  },
+});
+
+const headerRenderer = ({ key, columnIndex, style }) => {
+  const column = columns[columnIndex];
+  const cellData = column.header || column.name;
+
+  return (
+    <TableCell
+      component="div"
+      key={key}
+      style={{
+        ...style,
+        // Can't use class to override single element styles
+        paddingTop: 0,
+        paddingBottom: 0,
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
+      {cellData}
+    </TableCell>
+  );
+};
+
+const getColumnWidth = ({ index }) => columns[index].width;
 
 export const PokemonList = ({
   isViewerOwner,
@@ -15,67 +51,99 @@ export const PokemonList = ({
   remoteRowCount,
   isLoading,
 }) => {
-  const isRowLoaded = ({ index }) => !!pokemonList?.[index];
-  const getColumnWidth = ({ index }) => columns[index].width;
-  const cellRenderer = ({ key, rowIndex, columnIndex, style }) => {
-    if (isLoading) return <Skeleton key={key} animation="wave" style={style} />;
+  const classes = useStyles();
+  const isRowLoaded = React.useCallback(({ index }) => !!pokemonList?.[index], [
+    pokemonList,
+  ]);
+  const cellRenderer = React.useCallback(
+    ({ key, rowIndex, columnIndex, style }) => {
+      if (isLoading)
+        return <Skeleton key={key} animation="wave" style={style} />;
 
-    // pokemonIndex === -1 is the header row
-    const pokemonIndex = rowIndex - 1;
-    const column = columns[columnIndex];
-    const Cell = column.cell;
-    const pokemon = pokemonList?.[pokemonIndex];
-    const cellData =
-      pokemon && Cell ? (
-        <Cell
-          isViewerOwner={isViewerOwner}
-          ownerId={ownerId}
-          collectionId={collectionId}
-          onDeletePokemon={onDeletePokemon}
-          {...pokemon}
-        />
-      ) : (
-        pokemon?.[column.name] || column.header || column.name
+      const pokemonIndex = rowIndex;
+      const column = columns[columnIndex];
+      const Cell = column.cell;
+      const pokemon = pokemonList?.[pokemonIndex];
+      const cellData =
+        pokemon && Cell ? (
+          <Cell
+            isViewerOwner={isViewerOwner}
+            ownerId={ownerId}
+            collectionId={collectionId}
+            onDeletePokemon={onDeletePokemon}
+            {...pokemon}
+          />
+        ) : (
+          pokemon?.[column.name] || column.header || column.name
+        );
+
+      return (
+        <TableCell
+          component="div"
+          key={key}
+          style={{
+            ...style,
+            // Can't use class to override single element styles
+            paddingTop: 0,
+            paddingBottom: 0,
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          {cellData}
+        </TableCell>
       );
+    },
+    [
+      collectionId,
+      isLoading,
+      isViewerOwner,
+      onDeletePokemon,
+      ownerId,
+      pokemonList,
+    ],
+  );
 
-    return (
-      <TableCell
-        component="div"
-        key={key}
-        style={{
-          ...style,
-          // Can't use class to override single element styles
-          paddingTop: 0,
-          paddingBottom: 0,
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        {cellData}
-      </TableCell>
-    );
-  };
+  const HEADER_ROW_HEIGHT = 60;
+  const TABLE_ROW_HEIGHT = 88;
 
   return (
     <AutoSizer>
       {({ height, width }) => (
-        <InfiniteLoadingGrid
-          infiniteLoaderProps={{
-            isRowLoaded: isRowLoaded,
-            loadMoreRows: loadMoreRows,
-            rowCount: remoteRowCount,
-          }}
-          gridProps={{
-            cellRenderer,
-            height,
-            width,
-            rowHeight: 88,
-            // +1 for header
-            rowCount: remoteRowCount + 1,
-            columnCount: columns.length,
-            columnWidth: getColumnWidth,
-          }}
-        />
+        <ScrollSync>
+          {({ onScroll, scrollLeft }) => (
+            <div className={classes.container}>
+              <MultiGrid
+                cellRenderer={headerRenderer}
+                height={HEADER_ROW_HEIGHT}
+                // Minus 1 for bottom border
+                rowHeight={HEADER_ROW_HEIGHT - 1}
+                // The table below can have a vertical scrollbar that needs to be accounted for
+                // to avoid horizontal scrolling scrolling too far
+                // This isn't a perfect solution, but it doesn't need to be
+                width={width - 20}
+                rowCount={1}
+                columnCount={columns.length}
+                columnWidth={getColumnWidth}
+                scrollLeft={scrollLeft}
+                onScroll={onScroll}
+              />
+              <InfiniteLoadingGrid
+                isRowLoaded={isRowLoaded}
+                loadMoreRows={loadMoreRows}
+                rowCount={remoteRowCount}
+                onScroll={onScroll}
+                scrollLeft={scrollLeft}
+                cellRenderer={cellRenderer}
+                width={width}
+                height={height - HEADER_ROW_HEIGHT}
+                rowHeight={TABLE_ROW_HEIGHT}
+                columnCount={columns.length}
+                columnWidth={getColumnWidth}
+              />
+            </div>
+          )}
+        </ScrollSync>
       )}
     </AutoSizer>
   );
