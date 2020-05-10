@@ -9,7 +9,7 @@ export const createContext = async ({ req }) => {
       algorithms: ['RS256'],
     });
 
-    if (user.id && user.username)
+    if (user.id && user.username) {
       return {
         user: {
           ...user,
@@ -18,5 +18,8 @@ export const createContext = async ({ req }) => {
           loginExpiration: user.exp,
         },
       };
+    }
   }
+
+  return {};
 };
