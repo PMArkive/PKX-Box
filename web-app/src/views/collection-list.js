@@ -53,21 +53,25 @@ export const CollectionListView = ({ match }) => {
     isCreateCollectionModalOpen,
     setIsCreateCollectionModalOpen,
   ] = React.useState(false);
+
   const closeCreateCollectionModel = () =>
     setIsCreateCollectionModalOpen(false);
+
   const openCreateCollectionModel = () => setIsCreateCollectionModalOpen(true);
   const { data, updateQuery, loading } = useQuery(GET_COLLECTION_NAMES, {
     variables: { userId },
-    fetchPolicy: 'cache-and-network',
   });
+
   const onCollectionMutation = (collectionId, updatedCollection) =>
     updateCollection(updateQuery, collectionId, updatedCollection);
+
   const [createCollection] = useMutation(CREATE_COLLECTION, {
     onCompleted: ({ newCollection }) => {
       updateCollection(updateQuery, newCollection.id, newCollection);
       closeCreateCollectionModel();
     },
   });
+
   const onCreateCollection = ({ name, isPublic }) =>
     createCollection({ variables: { name, isPublic } });
 

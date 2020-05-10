@@ -36,6 +36,7 @@ export const CollectionView = ({ match }) => {
     // Without this, infinite scrolling won't know to load more data later
     PAGE_SIZE + 30,
   );
+
   const { data, updateQuery, loading, fetchMore } = useQuery(GET_COLLECTION, {
     variables: { userId, collectionId, first: PAGE_SIZE, after: '' },
     fetchPolicy: 'cache-and-network',
@@ -47,6 +48,9 @@ export const CollectionView = ({ match }) => {
         setCollectionPokemonLimit(pokemonList.length);
     },
   });
+  const collection = data?.user?.collection || {};
+  const currentCurosr = collection?.pokemonConnection?.cursor || '';
+
   const [deletePokemon] = useMutation(DELETE_POKEMON, {
     onCompleted: ({ deletedPokemon }) => {
       updateQuery((previousResult) => {
@@ -80,10 +84,10 @@ export const CollectionView = ({ match }) => {
       setToast('Error deleting PKX', 'error', true);
     },
   });
+
   const onDeletePokemon = (pokemonId) =>
     deletePokemon({ variables: { collectionId, pokemonId } });
-  const collection = data?.user?.collection || {};
-  const currentCurosr = collection?.pokemonConnection?.cursor || '';
+
   const loadMoreRows = () => {
     if (data && cursorsUsed.indexOf(currentCurosr) === -1) {
       setCursorsUsed([...cursorsUsed, currentCurosr]);
