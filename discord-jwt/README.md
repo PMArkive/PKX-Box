@@ -27,6 +27,7 @@ By putting this behind an API Gateway with other services, any request made to a
 - REDIRECT_URL - redirect url after the user has successfully logged in
 - JWT_SECRET - secret or key to sign the JWT
 - JWT_EXPIRATION_HOURS - hours until the jwt cookie expires
+- GOOGLE_APPLICATION_CREDENTIALS - a file location with the service account JSON. In the future, environment variables with the service account info should be provided instead
 
 ## Primary tools used
 

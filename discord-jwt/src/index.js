@@ -1,6 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import DiscordOAuth2 from 'discord-oauth2';
+import { upsertDiscordUser } from './services/firestore';
 
 const oauth = new DiscordOAuth2();
 
@@ -33,16 +34,18 @@ app.get('/discord', async (req, res) => {
     },
   );
 
-  const now = new Date(Date.now());
-  now.setHours(now.getHours() + jwtExpirationHours);
+  const expirationTime = new Date(Date.now());
+  expirationTime.setHours(expirationTime.getHours() + jwtExpirationHours);
 
   res.cookie('jwt', signedUser, {
-    expires: now,
+    expires: expirationTime,
     httpOnly: true,
     secure: true,
     sameSite: 'strict',
   });
   res.redirect(process.env.REDIRECT_URL);
+
+  await upsertDiscordUser(user);
 });
 
 app.post('/logout', (req, res) => {
