@@ -21,11 +21,11 @@
     "prettier": "^1.19.1"
   },
   "dependencies": {
+    "aws-serverless-express": "^3.3.8",
     "discord-oauth2": "^2.0.2",
     "express": "^4.17.1",
     "firebase-admin": "^8.12.1",
     "jsonwebtoken": "^8.5.1",
-    "phin": "^3.4.1",
-    "serverless-http": "^2.3.0"
+    "phin": "^3.4.1"
   }
 }
