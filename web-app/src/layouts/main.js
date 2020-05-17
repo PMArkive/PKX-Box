@@ -89,10 +89,8 @@ export const MainLayout = ({
       <Toolbar className={classes.toolbar}>
         <Breadcrumbs>
           {breadcrumbs?.map(({ text, href }, index) => (
-            <Link className={classes.breadcrumbLink} to={href}>
-              <Typography variant="body1" key={index}>
-                {text}
-              </Typography>
+            <Link className={classes.breadcrumbLink} to={href} key={index}>
+              <Typography variant="body1">{text}</Typography>
             </Link>
           ))}
         </Breadcrumbs>
