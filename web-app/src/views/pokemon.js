@@ -16,18 +16,14 @@ import {
 import { useTranslation } from 'react-i18next';
 
 export const PokemonView = ({ match }) => {
+  const { userId, collectionId, pokemonId } = match.params;
   const { t } = useTranslation();
   const { data, loading } = useQuery(GET_POKEMON_DETAILS, {
-    variables: {
-      userId: match.params.userId,
-      collectionId: match.params.collectionId,
-      pokemonId: match.params.pokemonId,
-    },
+    variables: { userId, collectionId, pokemonId },
   });
   const user = data?.user || {};
   const collection = user.collection || {};
   const {
-    id: pokemonId,
     species,
     ability,
     statNature,
@@ -68,21 +64,21 @@ export const PokemonView = ({ match }) => {
     ? null
     : [
         {
-          text: user.fullDiscordName,
-          href: createCollectionListRoute(user.id),
+          text: user.fullDiscordName || 'User',
+          href: createCollectionListRoute(userId),
         },
         {
-          text: collection.name,
-          href: createCollectionRoute(user.id, collection.id),
+          text: collection.name || 'Collection',
+          href: createCollectionRoute(userId, collectionId),
         },
         {
-          text: t(`species.${species}`),
-          href: createPokemonRoute(user.id, collection.id, pokemonId),
+          text: species ? t(`species.${species}`) : 'Pokemon',
+          href: createPokemonRoute(userId, collectionId, pokemonId),
         },
       ];
 
   return (
-    <MainLayout loading={loading} breadcrumbs={breadcrumbs}>
+    <MainLayout loading={loading && !data} breadcrumbs={breadcrumbs}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} lg={4}>
           <PokemonSummary

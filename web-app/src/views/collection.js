@@ -29,6 +29,7 @@ const PAGE_SIZE = 50;
 export const CollectionView = ({ match }) => {
   const classes = useStyles();
   const setToast = useToast();
+  const { userId, collectionId } = match.params;
   // Keep track of cursors to avoid fetching the same data multiple times
   // PokemonLists's InfiniteLoader will fetch any time the user scrolls past a certain point
   const [cursorsUsed, setCursorsUsed] = React.useState(['']);
@@ -40,8 +41,8 @@ export const CollectionView = ({ match }) => {
 
   const { data, updateQuery, loading, fetchMore } = useQuery(GET_COLLECTION, {
     variables: {
-      userId: match.params.userId,
-      collectionId: match.params.collectionId,
+      userId,
+      collectionId,
       first: PAGE_SIZE,
       after: '',
     },
@@ -93,7 +94,7 @@ export const CollectionView = ({ match }) => {
   });
 
   const onDeletePokemon = (pokemonId) =>
-    deletePokemon({ variables: { collectionId: collection.id, pokemonId } });
+    deletePokemon({ variables: { collectionId: collectionId, pokemonId } });
 
   const loadMoreRows = () => {
     if (data && cursorsUsed.indexOf(currentCurosr) === -1) {
@@ -101,8 +102,8 @@ export const CollectionView = ({ match }) => {
       fetchMore({
         query: GET_COLLECTION,
         variables: {
-          userId: user.id,
-          collectionId: collection.id,
+          userId: userId,
+          collectionId: collectionId,
           first: PAGE_SIZE,
           after: currentCurosr,
         },
@@ -127,18 +128,16 @@ export const CollectionView = ({ match }) => {
     }
   };
 
-  const breadcrumbs = loading
-    ? null
-    : [
-        {
-          text: user.fullDiscordName,
-          href: createCollectionListRoute(user.id),
-        },
-        {
-          text: collection.name,
-          href: createCollectionRoute(user.id, collection.id),
-        },
-      ];
+  const breadcrumbs = [
+    {
+      text: user.fullDiscordName || 'User',
+      href: createCollectionListRoute(userId),
+    },
+    {
+      text: collection.name || 'Collection',
+      href: createCollectionRoute(userId, collectionId),
+    },
+  ];
 
   return (
     <MainLayout hasContentPadding={false} breadcrumbs={breadcrumbs}>
@@ -147,8 +146,8 @@ export const CollectionView = ({ match }) => {
           onDeletePokemon={onDeletePokemon}
           isViewerOwner={collection.isViewerOwner}
           pokemonList={collection.pokemonConnection?.pokemonList}
-          collectionId={collection.id}
-          ownerId={user.id}
+          collectionId={collectionId}
+          ownerId={userId}
           isLoading={loading}
           loadMoreRows={loadMoreRows}
           remoteRowCount={collectionPokemonLimit}

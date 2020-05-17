@@ -46,6 +46,7 @@ const updateCollection = (updateQuery, collectionId, updatedCollection) => {
 export const CollectionListView = ({ match }) => {
   const { data: user } = useQuery(GET_VIEWER_INFO);
   const loggedInUserId = user?.viewer?.user?.id || null;
+  const userId = match.params.userId || loggedInUserId;
   const isLoggedIn = loggedInUserId !== null;
   const classes = useStyles();
   const [
@@ -58,7 +59,7 @@ export const CollectionListView = ({ match }) => {
 
   const openCreateCollectionModel = () => setIsCreateCollectionModalOpen(true);
   const { data, updateQuery, loading } = useQuery(GET_COLLECTION_PREVIEW, {
-    variables: { userId: match.params.userId || loggedInUserId },
+    variables: { userId },
     fetchPolicy: 'cache-and-network',
   });
 
@@ -76,24 +77,22 @@ export const CollectionListView = ({ match }) => {
     createCollection({ variables: { name, isPublic } });
 
   const fetchedUser = data?.user || {};
-  const breadcrumbs = loading
-    ? null
-    : [
-        {
-          text: fetchedUser.fullDiscordName,
-          href: createCollectionListRoute(fetchedUser.id),
-        },
-      ];
+  const breadcrumbs = [
+    {
+      text: fetchedUser.fullDiscordName || 'User',
+      href: createCollectionListRoute(userId),
+    },
+  ];
 
   return (
     <>
-      <MainLayout loading={loading} breadcrumbs={breadcrumbs}>
+      <MainLayout loading={loading && !data} breadcrumbs={breadcrumbs}>
         <Grid container spacing={3}>
           {fetchedUser.collections?.map((collection) => {
             return (
               <Grid item xs={12} sm={6} md={4} lg={3} key={collection?.id}>
                 <CollectionCard
-                  ownerId={fetchedUser.id}
+                  ownerId={userId}
                   collection={collection}
                   onCollectionMutation={onCollectionMutation}
                 />
