@@ -13,8 +13,10 @@ import {
   createCollectionRoute,
   createPokemonRoute,
 } from '../routes';
+import { useTranslation } from 'react-i18next';
 
 export const PokemonView = ({ match }) => {
+  const { t } = useTranslation();
   const { data, loading } = useQuery(GET_POKEMON_DETAILS, {
     variables: {
       userId: match.params.userId,
@@ -74,7 +76,7 @@ export const PokemonView = ({ match }) => {
           href: createCollectionRoute(user.id, collection.id),
         },
         {
-          text: species,
+          text: t(`species.${species}`),
           href: createPokemonRoute(user.id, collection.id, pokemonId),
         },
       ];
