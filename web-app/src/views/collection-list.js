@@ -5,7 +5,7 @@ import Fab from '@material-ui/core/Fab';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 import { MainLayout } from '../layouts/main';
-import { GET_COLLECTION_NAMES } from '../graphql/queries/collection-names';
+import { GET_COLLECTION_PREVIEW } from '../graphql/queries/collection-names';
 import { CollectionCard } from '../components/collection-card';
 import { EditCollectionModal } from '../components/edit-collection-modal';
 import { CREATE_COLLECTION } from '../graphql/mutations/create-collection';
@@ -57,8 +57,9 @@ export const CollectionListView = ({ match }) => {
     setIsCreateCollectionModalOpen(false);
 
   const openCreateCollectionModel = () => setIsCreateCollectionModalOpen(true);
-  const { data, updateQuery, loading } = useQuery(GET_COLLECTION_NAMES, {
+  const { data, updateQuery, loading } = useQuery(GET_COLLECTION_PREVIEW, {
     variables: { userId: match.params.userId || loggedInUserId },
+    fetchPolicy: 'cache-and-network',
   });
 
   const onCollectionMutation = (collectionId, updatedCollection) =>
