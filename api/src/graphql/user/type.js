@@ -5,6 +5,7 @@ export const UserType = gql`
     id: DiscordId!
     discordUsername: String
     discordDiscriminator: String
+    fullDiscordName: String
     collection(collectionId: FirestoreId!): Collection
     collections: [Collection]
   }

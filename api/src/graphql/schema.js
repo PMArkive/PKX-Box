@@ -80,6 +80,8 @@ export const resolvers = {
   User: {
     collection: fetchCollection,
     collections: fetchCollections,
+    fullDiscordName: ({ discordUsername, discordDiscriminator }) =>
+      `${discordUsername}#${discordDiscriminator}`,
   },
   Collection: {
     pokemon: fetchPokemon,
