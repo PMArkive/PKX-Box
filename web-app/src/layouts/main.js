@@ -86,7 +86,7 @@ export const MainLayout = ({
         toggleNavDrawer={toggleNavDrawer}
         breadcrumbs={breadcrumbs}
       />
-      <Toolbar className={classes.toolbar}>
+      <Toolbar className={`${classes.toolbar} ${contentClass}`}>
         <Breadcrumbs>
           {breadcrumbs?.map(({ text, href }, index) => (
             <Link className={classes.breadcrumbLink} to={href} key={index}>
