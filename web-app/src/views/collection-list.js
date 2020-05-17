@@ -10,6 +10,7 @@ import { CollectionCard } from '../components/collection-card';
 import { EditCollectionModal } from '../components/edit-collection-modal';
 import { CREATE_COLLECTION } from '../graphql/mutations/create-collection';
 import { GET_VIEWER_INFO } from '../graphql/queries/user';
+import { createCollectionListRoute } from '../routes';
 
 const useStyles = makeStyles({
   fab: {
@@ -46,8 +47,6 @@ export const CollectionListView = ({ match }) => {
   const { data: user } = useQuery(GET_VIEWER_INFO);
   const loggedInUserId = user?.viewer?.user?.id || null;
   const isLoggedIn = loggedInUserId !== null;
-  const { userId: parameterUserId } = match.params;
-  const userId = parameterUserId || loggedInUserId;
   const classes = useStyles();
   const [
     isCreateCollectionModalOpen,
@@ -59,7 +58,7 @@ export const CollectionListView = ({ match }) => {
 
   const openCreateCollectionModel = () => setIsCreateCollectionModalOpen(true);
   const { data, updateQuery, loading } = useQuery(GET_COLLECTION_NAMES, {
-    variables: { userId },
+    variables: { userId: match.params.userId || loggedInUserId },
   });
 
   const onCollectionMutation = (collectionId, updatedCollection) =>
@@ -75,15 +74,25 @@ export const CollectionListView = ({ match }) => {
   const onCreateCollection = ({ name, isPublic }) =>
     createCollection({ variables: { name, isPublic } });
 
+  const fetchedUser = data?.user || {};
+  const breadcrumbs = loading
+    ? null
+    : [
+        {
+          text: fetchedUser.fullDiscordName,
+          href: createCollectionListRoute(fetchedUser.id),
+        },
+      ];
+
   return (
     <>
-      <MainLayout loading={loading}>
+      <MainLayout loading={loading} breadcrumbs={breadcrumbs}>
         <Grid container spacing={3}>
-          {data?.user?.collections?.map((collection) => {
+          {fetchedUser.collections?.map((collection) => {
             return (
               <Grid item xs={12} sm={6} md={4} lg={3} key={collection?.id}>
                 <CollectionCard
-                  ownerId={userId}
+                  ownerId={fetchedUser.id}
                   collection={collection}
                   onCollectionMutation={onCollectionMutation}
                 />

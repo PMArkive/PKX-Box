@@ -8,13 +8,24 @@ import { PokemonOtInfo } from '../components/pokemon-ot-info';
 import { PokemonOrigin } from '../components/pokemon-origin';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_POKEMON_DETAILS } from '../graphql/queries/pokemon-details';
+import {
+  createCollectionListRoute,
+  createCollectionRoute,
+  createPokemonRoute,
+} from '../routes';
 
 export const PokemonView = ({ match }) => {
-  const { userId, collectionId, pokemonId } = match.params;
   const { data, loading } = useQuery(GET_POKEMON_DETAILS, {
-    variables: { userId, collectionId, pokemonId },
+    variables: {
+      userId: match.params.userId,
+      collectionId: match.params.collectionId,
+      pokemonId: match.params.pokemonId,
+    },
   });
+  const user = data?.user || {};
+  const collection = user.collection || {};
   const {
+    id: pokemonId,
     species,
     ability,
     statNature,
@@ -46,13 +57,30 @@ export const PokemonView = ({ match }) => {
     ball,
     displayTID,
     displaySID,
-  } = data?.user?.collection?.pokemon || {};
+  } = collection.pokemon || {};
   const ivs = [IV_HP, IV_ATK, IV_DEF, IV_SPA, IV_SPD, IV_SPE];
   const evs = [EV_HP, EV_ATK, EV_DEF, EV_SPA, EV_SPD, EV_SPE];
   const moves = [move1, move2, move3, move4];
 
+  const breadcrumbs = loading
+    ? null
+    : [
+        {
+          text: user.fullDiscordName,
+          href: createCollectionListRoute(user.id),
+        },
+        {
+          text: collection.name,
+          href: createCollectionRoute(user.id, collection.id),
+        },
+        {
+          text: species,
+          href: createPokemonRoute(user.id, collection.id, pokemonId),
+        },
+      ];
+
   return (
-    <MainLayout loading={loading}>
+    <MainLayout loading={loading} breadcrumbs={breadcrumbs}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} lg={4}>
           <PokemonSummary

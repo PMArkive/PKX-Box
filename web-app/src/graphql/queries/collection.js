@@ -9,6 +9,8 @@ export const GET_COLLECTION = gql`
 
   query userCollection($userId: DiscordId!, $collectionId: FirestoreId!, $first:Int!, $after: String!) {
     user(userId: $userId) {
+      id
+      fullDiscordName
       collection(collectionId: $collectionId) {
         id
         name

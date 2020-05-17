@@ -6,8 +6,7 @@ export const GET_VIEWER_INFO = gql`
       loginExpiration
       user {
         id
-        discordUsername
-        discordDiscriminator
+        fullDiscordName
       }
     }
   }

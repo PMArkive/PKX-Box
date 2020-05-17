@@ -13,6 +13,7 @@ const useStyles = makeStyles({
       // I'm against !important, but this seemed to be the better than alternatives this one time
       overflowX: 'hidden !important',
       borderBottom: '1px solid rgba(224, 224, 224, 1)',
+      borderTop: '1px solid rgba(224, 224, 224, 1)',
     },
   },
 });
@@ -116,8 +117,8 @@ export const PokemonList = ({
               <MultiGrid
                 cellRenderer={headerRenderer}
                 height={HEADER_ROW_HEIGHT}
-                // Minus 1 for bottom border
-                rowHeight={HEADER_ROW_HEIGHT - 1}
+                // Minus 2 for top and bottom border
+                rowHeight={HEADER_ROW_HEIGHT - 2}
                 // The table below can have a vertical scrollbar that needs to be accounted for
                 // to avoid horizontal scrolling scrolling too far
                 // This isn't a perfect solution, but it doesn't need to be

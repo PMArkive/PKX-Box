@@ -37,7 +37,7 @@ export const AppBar = ({ className, toggleNavDrawer }) => {
   const user = data?.viewer?.user;
   const loggedInUserId = user?.id || null;
   const isLoggedIn = loggedInUserId !== null;
-  const displayName = `${user?.discordUsername}#${user?.discordDiscriminator}`;
+  const displayName = user?.fullDiscordName;
   const navigateToAccount = () =>
     history.push(createCollectionListRoute(loggedInUserId));
   const handleLogout = async () => {

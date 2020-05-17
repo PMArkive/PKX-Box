@@ -7,17 +7,19 @@ import { PokemonList } from '../components/pokemon-list';
 import { DELETE_POKEMON } from '../graphql/mutations/delete-pokemon';
 import { useToast } from '../components/toast';
 import { mergeWithArrays } from '../utils/merge-with-arrays';
+import { createCollectionListRoute, createCollectionRoute } from '../routes';
 
 const useStyles = makeStyles({
   content: {
-    // Heights are from Material-UI
+    // Heights are from Material-UI - double all heights since there are two toolbars
+    // 0.5rem is the second toolbar margin
     '@media (min-width:0px) and (orientation: landscape)': {
-      height: 'calc(100vh - 48px)',
+      height: 'calc(100vh - 96px - 0.5rem)', // 48 * 2 = 96
     },
     '@media (min-width:600px)': {
-      height: 'calc(100vh - 64px)',
+      height: 'calc(100vh - 128px - 0.5rem)', // 64 * 2 = 128
     },
-    height: `calc(100vh - 56px)`,
+    height: `calc(100vh - 112px - 0.5rem)`, // 56 * 2 = 112
     width: '100%',
   },
 });
@@ -27,7 +29,6 @@ const PAGE_SIZE = 50;
 export const CollectionView = ({ match }) => {
   const classes = useStyles();
   const setToast = useToast();
-  const { userId, collectionId } = match.params;
   // Keep track of cursors to avoid fetching the same data multiple times
   // PokemonLists's InfiniteLoader will fetch any time the user scrolls past a certain point
   const [cursorsUsed, setCursorsUsed] = React.useState(['']);
@@ -38,7 +39,12 @@ export const CollectionView = ({ match }) => {
   );
 
   const { data, updateQuery, loading, fetchMore } = useQuery(GET_COLLECTION, {
-    variables: { userId, collectionId, first: PAGE_SIZE, after: '' },
+    variables: {
+      userId: match.params.userId,
+      collectionId: match.params.collectionId,
+      first: PAGE_SIZE,
+      after: '',
+    },
     fetchPolicy: 'cache-and-network',
     onCompleted: ({ user }) => {
       const pokemonList =
@@ -48,7 +54,8 @@ export const CollectionView = ({ match }) => {
         setCollectionPokemonLimit(pokemonList.length);
     },
   });
-  const collection = data?.user?.collection || {};
+  const user = data?.user || {};
+  const collection = user.collection || {};
   const currentCurosr = collection?.pokemonConnection?.cursor || '';
 
   const [deletePokemon] = useMutation(DELETE_POKEMON, {
@@ -86,7 +93,7 @@ export const CollectionView = ({ match }) => {
   });
 
   const onDeletePokemon = (pokemonId) =>
-    deletePokemon({ variables: { collectionId, pokemonId } });
+    deletePokemon({ variables: { collectionId: collection.id, pokemonId } });
 
   const loadMoreRows = () => {
     if (data && cursorsUsed.indexOf(currentCurosr) === -1) {
@@ -94,8 +101,8 @@ export const CollectionView = ({ match }) => {
       fetchMore({
         query: GET_COLLECTION,
         variables: {
-          userId,
-          collectionId,
+          userId: user.id,
+          collectionId: collection.id,
           first: PAGE_SIZE,
           after: currentCurosr,
         },
@@ -120,15 +127,28 @@ export const CollectionView = ({ match }) => {
     }
   };
 
+  const breadcrumbs = loading
+    ? null
+    : [
+        {
+          text: user.fullDiscordName,
+          href: createCollectionListRoute(user.id),
+        },
+        {
+          text: collection.name,
+          href: createCollectionRoute(user.id, collection.id),
+        },
+      ];
+
   return (
-    <MainLayout hasContentPadding={false}>
+    <MainLayout hasContentPadding={false} breadcrumbs={breadcrumbs}>
       <div className={classes.content}>
         <PokemonList
           onDeletePokemon={onDeletePokemon}
           isViewerOwner={collection.isViewerOwner}
           pokemonList={collection.pokemonConnection?.pokemonList}
-          collectionId={collectionId}
-          ownerId={userId}
+          collectionId={collection.id}
+          ownerId={user.id}
           isLoading={loading}
           loadMoreRows={loadMoreRows}
           remoteRowCount={collectionPokemonLimit}

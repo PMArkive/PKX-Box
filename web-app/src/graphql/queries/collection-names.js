@@ -4,6 +4,8 @@ import { generalConfig } from '../../config';
 export const GET_COLLECTION_NAMES = gql`
   query userCollectionNames($userId: DiscordId!) {
     user(userId: $userId) {
+      id
+      fullDiscordName
       collections {
         id
         name
