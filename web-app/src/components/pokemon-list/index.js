@@ -58,13 +58,15 @@ export const PokemonList = ({
   ]);
   const cellRenderer = React.useCallback(
     ({ key, rowIndex, columnIndex, style }) => {
-      if (isLoading)
-        return <Skeleton key={key} animation="wave" style={style} />;
-
       const pokemonIndex = rowIndex;
+      const pokemon = pokemonList?.[pokemonIndex];
+
+      if (isLoading && !pokemon) {
+        return <Skeleton key={key} animation="wave" style={style} />;
+      }
+
       const column = columns[columnIndex];
       const Cell = column.cell;
-      const pokemon = pokemonList?.[pokemonIndex];
       const cellData =
         pokemon && Cell ? (
           <Cell
