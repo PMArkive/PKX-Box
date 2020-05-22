@@ -5,7 +5,7 @@ export const LoginCheckType = gql`
   directive @loginCheck on FIELD_DEFINITION
 `;
 
-export class LoginCheckDirective extends SchemaDirectiveVisitor {
+export class LoginCheck extends SchemaDirectiveVisitor {
   visitFieldDefinition(field) {
     const { resolve = defaultFieldResolver } = field;
     field.resolve = async (...args) => {

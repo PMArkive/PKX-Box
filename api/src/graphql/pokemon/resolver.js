@@ -1,4 +1,8 @@
-import { db, userCollection } from '../../services/firestore';
+import {
+  db,
+  userCollection,
+  checkIfCollectionExists,
+} from '../../services/firestore';
 import { PKHEX_PROP_MAP } from './type';
 import { parsePKX } from '../../services/pkhex-api';
 import { encrypt } from '../../utils/crypto';
@@ -6,21 +10,22 @@ import { serializeCursor } from '../../utils/cursor';
 
 export const uploadBase64PKXs = async (
   parent,
-  { base64PKXs, collectionId },
+  { pkxs, collectionId },
   { user },
 ) => {
+  if (!checkIfCollectionExists(user.id, collectionId)) {
+    throw new Error('Collection does not exist!');
+  }
+
   const collectionRef = userCollection
     .doc(user.id)
     .collection('collections')
     .doc(collectionId);
-  const collection = await collectionRef.get();
-
-  if (!collection.exists) throw new Error("Collection doesn't exist");
 
   const batch = db.batch();
   const pkxCollection = collectionRef.collection('pkx');
 
-  const savePKXPromises = base64PKXs.map(async base64PKX => {
+  const savePKXPromises = pkxs.map(async ({ base64PKX }) => {
     const parsedPKX = await parsePKX(base64PKX);
 
     if (parsedPKX === null) return;

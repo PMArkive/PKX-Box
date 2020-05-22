@@ -10,8 +10,7 @@ export const CREATE_COLLECTION = gql`
 
   mutation createCollection($name: StringMaxLength40!, $isPublic: Boolean!) {
     newCollection: upsertCollection(
-      newCollectionName: $name
-      makeCollectionPublic: $isPublic
+      collection: { name: $name, isPublic: $isPublic }
     ) {
       id
       name

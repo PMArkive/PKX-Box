@@ -1,4 +1,5 @@
 import { gql } from 'apollo-server-express';
+import { GraphQLString } from 'graphql';
 import { PokemonType } from './pokemon/type';
 import { PokemonInputType } from './pokemon/input-type';
 import {
@@ -17,10 +18,12 @@ import {
   deleteCollection,
 } from './collection/resolver';
 import { CollectionInputType } from './collection/input-type';
-import { LoginCheckType } from './directives';
-import { createStringSizeScalar } from './scalars';
+import { LoginCheckType } from './directives/login-check';
+import { LimitedLengthType } from './scalars';
 import { getLogin } from './login/resolver';
 import { LoginType } from './login/type';
+import { ScalarLengthType } from './directives/scalar-length';
+import { ListLengthType } from './directives/list-length';
 
 const rootTypes = gql`
   scalar FirestoreId
@@ -43,6 +46,8 @@ const rootTypes = gql`
 export const typeDefs = [
   rootTypes,
   LoginCheckType,
+  ScalarLengthType,
+  ListLengthType,
   LoginType,
   PokemonType,
   PokemonInputType,
@@ -52,18 +57,8 @@ export const typeDefs = [
 ];
 
 export const resolvers = {
-  FirestoreId: createStringSizeScalar({
-    name: 'FirestoreId',
-    maxLength: 30,
-  }),
-  DiscordId: createStringSizeScalar({
-    name: 'DiscordId',
-    maxLength: 20,
-  }),
-  StringMaxLength40: createStringSizeScalar({
-    name: 'StringMaxLength40',
-    maxLength: 40,
-  }),
+  FirestoreId: new LimitedLengthType(GraphQLString, 30, 'FirestoreId'),
+  DiscordId: new LimitedLengthType(GraphQLString, 20, 'DiscordId'),
   Query: {
     viewer: getLogin,
     user: fetchUser,

@@ -7,7 +7,9 @@ import { typeDefs, resolvers } from './graphql/schema';
 import { createContext } from './utils/create-context';
 import { FireStoreDataSource } from './graphql/datasource';
 import { generalConfig } from './config/general';
-import { LoginCheckDirective } from './graphql/directives';
+import { LoginCheck } from './graphql/directives/login-check';
+import { ScalarLength } from './graphql/directives/scalar-length';
+import { ListLength } from './graphql/directives/list-length';
 
 export const app = express();
 
@@ -30,7 +32,9 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   schemaDirectives: {
-    loginCheck: LoginCheckDirective,
+    loginCheck: LoginCheck,
+    scalarLength: ScalarLength,
+    listLength: ListLength,
   },
   dataSources: () => ({
     firestore: new FireStoreDataSource(),

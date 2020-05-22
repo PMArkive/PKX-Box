@@ -2,14 +2,12 @@ import gql from 'graphql-tag';
 
 export const UPDATE_COLLECTION = gql`
   mutation updateCollection(
-    $collectionId: FirestoreId!
-    $newCollectionName: StringMaxLength40!
-    $makeCollectionPublic: Boolean!
+    $id: FirestoreId!
+    $name: StringMaxLength40!
+    $isPublic: Boolean!
   ) {
     upsertCollection(
-      collectionId: $collectionId
-      newCollectionName: $newCollectionName
-      makeCollectionPublic: $makeCollectionPublic
+      collection: { id: $id, name: $name, isPublic: $isPublic }
     ) {
       id
       name

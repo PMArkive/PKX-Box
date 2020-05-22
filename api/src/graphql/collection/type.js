@@ -12,7 +12,7 @@ export const CollectionType = gql`
 
   type Collection {
     id: FirestoreId
-    name: StringMaxLength40
+    name: String
     isPublic: Boolean
     isViewerOwner: Boolean
     pokemon(pokemonId: FirestoreId!): Pokemon

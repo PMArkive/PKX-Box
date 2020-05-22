@@ -51,4 +51,14 @@ export const deleteCollection = (collectionRef, batchSize) => {
   });
 };
 
+export const checkIfCollectionExists = async (userId, collectionId) => {
+  const collectionRef = userCollection
+    .doc(userId)
+    .collection('collections')
+    .doc(collectionId);
+  const collection = await collectionRef.get();
+
+  return collection.exists;
+};
+
 export const userCollection = db.collection('user');

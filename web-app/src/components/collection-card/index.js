@@ -144,7 +144,9 @@ export const CollectionCard = ({
     uploadPKX({
       variables: {
         collectionId,
-        base64PKXs: pkxs.map(convertArrayBufferToBase64),
+        pkxs: pkxs.map((pkx) => ({
+          base64PKX: convertArrayBufferToBase64(pkx),
+        })),
       },
     });
   const [updateCollection, { loading: updateCollectionLoading }] = useMutation(
@@ -156,9 +158,9 @@ export const CollectionCard = ({
   const onUpdateCollection = ({ name, isPublic }) =>
     updateCollection({
       variables: {
-        collectionId,
-        newCollectionName: name,
-        makeCollectionPublic: isPublic,
+        name,
+        isPublic,
+        id: collectionId,
       },
     });
   const [

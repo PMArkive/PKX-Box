@@ -4,22 +4,14 @@ import {
 } from '../../services/firestore';
 import { generalConfig } from '../../config/general';
 
-export const upsertCollection = async (
-  parent,
-  { collectionId, newCollectionName, makeCollectionPublic },
-  { user },
-) => {
-  const collection = {
-    name: newCollectionName,
-    isPublic: makeCollectionPublic,
-  };
+export const upsertCollection = async (parent, { collection }, { user }) => {
   const collectionsRef = userCollection.doc(user.id).collection('collections');
-  const collectionRef = collectionId
-    ? collectionsRef.doc(collectionId)
+  const collectionRef = collection.id
+    ? collectionsRef.doc(collection.id)
     : // Passing undefined to `doc` throws an error
       collectionsRef.doc();
 
-  if (!collectionId) {
+  if (!collection.id) {
     collection.createdAt = Date.now();
   }
 
