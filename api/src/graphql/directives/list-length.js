@@ -7,7 +7,7 @@ export const ListLengthType = gql`
 
 export class ListLength extends SchemaDirectiveVisitor {
   visitArgumentDefinition(arg, { field }) {
-    if (!field.type instanceof GraphQLList) {
+    if (!(field.type instanceof GraphQLList)) {
       throw new Error('Not a list type!');
     }
 

@@ -1,5 +1,4 @@
-import { GraphQLScalarType, GraphQLError } from 'graphql';
-import { Kind } from 'graphql/language';
+import { GraphQLScalarType } from 'graphql';
 
 // Thanks to https://www.apollographql.com/docs/apollo-server/schema/creating-directives/#enforcing-value-restrictions
 export class LimitedLengthType extends GraphQLScalarType {
