@@ -51,7 +51,7 @@ const ActionsCell = ({
   return (
     <>
       <IconButton
-        aria-label="view"
+        aria-label="View pokemon"
         onClick={() =>
           history.push(createPokemonRoute(ownerId, collectionId, id))
         }
@@ -59,7 +59,10 @@ const ActionsCell = ({
         <VisibilityIcon />
       </IconButton>
       {isViewerOwner && (
-        <IconButton aria-label="delete" onClick={() => onDeletePokemon(id)}>
+        <IconButton
+          aria-label="Delete pokemon"
+          onClick={() => onDeletePokemon(id)}
+        >
           <DeleteIcon />
         </IconButton>
       )}
@@ -78,19 +81,25 @@ const EggCell = ({ isEgg }) => (isEgg ? <CheckIcon /> : null);
 const CanGigantamaxCell = ({ canGigantamax }) =>
   canGigantamax ? <CheckIcon /> : null;
 
-const IVsCell = ({ IV_HP, IV_ATK, IV_DEF, IV_SPA, IV_SPD, IV_SPE }) =>
-  [IV_HP, IV_ATK, IV_DEF, IV_SPA, IV_SPD, IV_SPE].join('/');
+const IVsCell = ({ ivHP, ivATK, ivDEF, ivSPA, ivSPD, ivSPE }) =>
+  [ivHP, ivATK, ivDEF, ivSPA, ivSPD, ivSPE].join('.');
 
-const EVsCell = ({ EV_HP, EV_ATK, EV_DEF, EV_SPA, EV_SPD, EV_SPE }) =>
-  [EV_HP, EV_ATK, EV_DEF, EV_SPA, EV_SPD, EV_SPE].join('/');
+const EVsCell = ({ evHP, evATK, evDEF, evSPA, evSPD, evSPE }) =>
+  [evHP, evATK, evDEF, evSPA, evSPD, evSPE].join('.');
 
-const VerifedLegalCell = ({ isLegal }) => (isLegal ? <CheckIcon /> : null);
+const VerifedLegalCell = ({ verifiedLegal }) =>
+  verifiedLegal ? <CheckIcon /> : null;
 
 const MetDateCell = ({ metYear, metMonth, metDay }) =>
   getLocalizedDate(2000 + metYear, metMonth, metDay);
 
 const EggMetDateCell = ({ eggYear, eggMonth, eggDay }) =>
   getLocalizedDate(2000 + eggYear, eggMonth, eggDay);
+
+const createIdentityCell = (propName) => (pkx) => {
+  const value = pkx?.[propName];
+  return value === null ? '' : value;
+};
 
 export const columns = [
   {
@@ -111,8 +120,7 @@ export const columns = [
     cell: EggCell,
   },
   {
-    name: 'CanGigantamax',
-    header: 'Gigantamax',
+    name: 'Gigantamax',
     width: 100,
     cell: CanGigantamaxCell,
   },
@@ -123,7 +131,6 @@ export const columns = [
   },
   {
     name: 'Ability',
-    header: 'Ability',
     width: 100,
     cell: AbilityCell,
   },
@@ -138,19 +145,17 @@ export const columns = [
     cell: MovesCell,
   },
   {
-    name: 'gender',
-    header: 'Gender',
+    name: 'Gender',
     cell: GenderCell,
     width: 100,
   },
   {
-    name: 'currentLevel',
-    header: 'Level',
+    name: 'Level',
     width: 100,
+    cell: createIdentityCell('currentLevel'),
   },
   {
-    name: 'StatNature',
-    header: 'Nature',
+    name: 'Nature',
     width: 100,
     cell: StatNatureCell,
   },
@@ -164,10 +169,26 @@ export const columns = [
     width: 150,
     cell: EVsCell,
   },
-  { name: 'genNumber', header: 'Generation', width: 100 },
-  { name: 'otName', header: 'OT Name', width: 100 },
-  { name: 'displayTID', header: 'TID', width: 100 },
-  { name: 'displaySID', header: 'SID', width: 100 },
+  {
+    name: 'Generation',
+    width: 100,
+    cell: createIdentityCell('genNumber'),
+  },
+  {
+    name: 'OT Name',
+    width: 100,
+    cell: createIdentityCell('otName'),
+  },
+  {
+    name: 'TID',
+    width: 100,
+    cell: createIdentityCell('displayTID'),
+  },
+  {
+    name: 'SID',
+    width: 100,
+    cell: createIdentityCell('displaySID'),
+  },
   {
     name: 'Met Date',
     width: 200,

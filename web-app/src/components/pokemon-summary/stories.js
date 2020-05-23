@@ -13,7 +13,6 @@ export const withContainer = () => (
       ability={number('ability', 10)}
       ball={number('ball', 4)}
       heldItem={number('heldItem', 20)}
-      ivs={object('ivs', [31, 31, 31, 31, 31, 31])}
       nature={number('nature', 1)}
       species={number('species', 1)}
     />

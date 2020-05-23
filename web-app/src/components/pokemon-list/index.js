@@ -20,7 +20,6 @@ const useStyles = makeStyles({
 
 const headerRenderer = ({ key, columnIndex, style }) => {
   const column = columns[columnIndex];
-  const cellData = column.header || column.name;
 
   return (
     <TableCell
@@ -35,12 +34,19 @@ const headerRenderer = ({ key, columnIndex, style }) => {
         alignItems: 'center',
       }}
     >
-      {cellData}
+      {column.name}
     </TableCell>
   );
 };
 
-const getColumnWidth = ({ index }) => columns[index].width;
+const getHeaderColumnWidth = ({ index }) => {
+  const lastColumnIndex = columns.length - 1;
+  const columnWidth = columns[index].width;
+
+  return index < lastColumnIndex ? columnWidth : columnWidth + 20;
+};
+
+const getContentColumnWidth = ({ index }) => columns[index].width;
 
 export const PokemonList = ({
   isViewerOwner,
@@ -77,7 +83,7 @@ export const PokemonList = ({
             {...pokemon}
           />
         ) : (
-          pokemon?.[column.name] || column.header || column.name
+          ''
         );
 
       return (
@@ -121,13 +127,10 @@ export const PokemonList = ({
                 height={HEADER_ROW_HEIGHT}
                 // Minus 2 for top and bottom border
                 rowHeight={HEADER_ROW_HEIGHT - 2}
-                // The table below can have a vertical scrollbar that needs to be accounted for
-                // to avoid horizontal scrolling scrolling too far
-                // This isn't a perfect solution, but it doesn't need to be
-                width={width - 20}
+                width={width}
                 rowCount={1}
                 columnCount={columns.length}
-                columnWidth={getColumnWidth}
+                columnWidth={getHeaderColumnWidth}
                 scrollLeft={scrollLeft}
                 onScroll={onScroll}
               />
@@ -142,7 +145,7 @@ export const PokemonList = ({
                 height={height - HEADER_ROW_HEIGHT}
                 rowHeight={TABLE_ROW_HEIGHT}
                 columnCount={columns.length}
-                columnWidth={getColumnWidth}
+                columnWidth={getContentColumnWidth}
               />
             </div>
           )}

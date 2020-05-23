@@ -8,7 +8,7 @@ import { PokemonSprite } from '../pokemon-sprite';
 import { TitleCard } from '../title-card';
 
 const useStyles = makeStyles({
-  ivs: {
+  text: {
     marginTop: 12,
     marginBottom: 12,
   },
@@ -18,7 +18,6 @@ export const PokemonSummary = ({
   ability = 0,
   ball = 0,
   heldItem = 0,
-  ivs = [],
   nature = 0,
   species = 0,
 }) => {
@@ -31,10 +30,7 @@ export const PokemonSummary = ({
       <PokemonSprite id={species} />
       <PokemonBall id={ball} />
       <PokemonItem id={heldItem} />
-      <Typography className={classes.ivs} color="textSecondary">
-        {ivs.join('.')}
-      </Typography>
-      <Typography variant="body2" component="p">
+      <Typography variant="body2" component="p" className={classes.text}>
         {t(`natures.${nature}`)} - {abilityText}
       </Typography>
     </TitleCard>

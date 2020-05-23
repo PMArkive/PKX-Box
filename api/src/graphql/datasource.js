@@ -7,7 +7,7 @@ import { deserializeCursor } from '../utils/cursor';
 const formatFirestorePKX = (pkxs, callingUserId, getOwnerId) => {
   return mapFirestoreArray(pkxs, (pkx, index) => {
     const pkxData = pkx.data();
-    const boxData = pkxData?.pkx?.BoxData;
+    const boxData = pkxData?.pkx?.boxData;
     const ownerId = getOwnerId(index);
     const isOwner = callingUserId === ownerId;
 
@@ -15,7 +15,7 @@ const formatFirestorePKX = (pkxs, callingUserId, getOwnerId) => {
       id: pkx.id,
       ownerId,
       ...pkxData,
-      BoxData: isOwner && boxData ? decrypt(boxData).toString('base64') : null,
+      boxData: isOwner && boxData ? decrypt(boxData).toString('base64') : null,
     };
   });
 };

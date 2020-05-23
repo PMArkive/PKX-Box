@@ -16,23 +16,23 @@ export const PKHEX_PROP_MAP = {
   Egg_Day: 'eggDay',
   Egg_Month: 'eggMonth',
   Egg_Year: 'eggYear',
-  EV_ATK: 'EV_ATK',
-  EV_DEF: 'EV_DEF',
-  EV_HP: 'EV_HP',
-  EV_SPA: 'EV_SPA',
-  EV_SPD: 'EV_SPD',
-  EV_SPE: 'EV_SPE',
+  EV_ATK: 'evATK',
+  EV_DEF: 'evDEF',
+  EV_HP: 'evHP',
+  EV_SPA: 'evSPA',
+  EV_SPD: 'evSPD',
+  EV_SPE: 'evSPE',
   Gender: 'gender',
   GenNumber: 'genNumber',
   IsEgg: 'isEgg',
-  IsLegal: 'isLegal',
+  IsLegal: 'verifiedLegal',
   IsShiny: 'isShiny',
-  IV_ATK: 'IV_ATK',
-  IV_DEF: 'IV_DEF',
-  IV_HP: 'IV_HP',
-  IV_SPA: 'IV_SPA',
-  IV_SPD: 'IV_SPD',
-  IV_SPE: 'IV_SPE',
+  IV_ATK: 'ivATK',
+  IV_DEF: 'ivDEF',
+  IV_HP: 'ivHP',
+  IV_SPA: 'ivSPA',
+  IV_SPD: 'ivSPD',
+  IV_SPE: 'ivSPE',
   Language: 'language',
   Met_Day: 'metDay',
   Met_Month: 'metMonth',
@@ -54,10 +54,10 @@ export const PokemonType = gql`
   type Pokemon {
     "An Id which can be used to reference the Pokemon."
     id: String
-    ability: Int
+    ability: Int!
     abilityNumber: Int
     altForm: Int
-    ball: Int
+    ball: Int!
     boxData: String
     canGigantamax: Boolean
     checksumValid: Boolean
@@ -70,36 +70,48 @@ export const PokemonType = gql`
     eggDay: Int
     eggMonth: Int
     eggYear: Int
-    EV_ATK: Int
-    EV_DEF: Int
-    EV_HP: Int
-    EV_SPA: Int
-    EV_SPD: Int
-    EV_SPE: Int
+    evATK: Int
+    evDEF: Int
+    evHP: Int
+    evSPA: Int
+    evSPD: Int
+    evSPE: Int
+    displayEvATK: String
+    displayEvDEF: String
+    displayEvHP: String
+    displayEvSPA: String
+    displayEvSPD: String
+    displayEvSPE: String
     gender: Int
     genNumber: Int
     isEgg: Boolean
-    isLegal: Boolean
+    verifiedLegal: Boolean
     isShiny: Boolean
-    IV_ATK: Int
-    IV_DEF: Int
-    IV_HP: Int
-    IV_SPA: Int
-    IV_SPD: Int
-    IV_SPE: Int
-    language: Int
+    ivATK: Int
+    ivDEF: Int
+    ivHP: Int
+    ivSPA: Int
+    ivSPD: Int
+    ivSPE: Int
+    displayIvATK: String
+    displayIvDEF: String
+    displayIvHP: String
+    displayIvSPA: String
+    displayIvSPD: String
+    displayIvSPE: String
+    language: Int!
     metDay: Int
     metMonth: Int
     metYear: Int
-    move1: Int
-    move2: Int
-    move3: Int
-    move4: Int
+    move1: Int!
+    move2: Int!
+    move3: Int!
+    move4: Int!
     otName: String
     region: Int
-    species: Int
-    statNature: Int
-    version: Int
+    species: Int!
+    statNature: Int!
+    version: Int!
     wasEgg: Boolean
   }
 

@@ -56,6 +56,38 @@ export const uploadBase64PKXs = async (
   return savedPKXs;
 };
 
+export const uploadPKXProps = async (
+  parent,
+  { pkxProps, collectionId },
+  { user },
+) => {
+  if (!checkIfCollectionExists(user.id, collectionId)) {
+    throw new Error('Collection does not exist!');
+  }
+
+  const collectionRef = userCollection
+    .doc(user.id)
+    .collection('collections')
+    .doc(collectionId);
+
+  const batch = db.batch();
+  const pkxCollection = collectionRef.collection('pkx');
+
+  const savedPKXs = pkxProps.map(pkx => {
+    const newDocRef = pkxCollection.doc();
+
+    pkx.createdAt = Date.now();
+
+    batch.set(newDocRef, pkx);
+
+    return { id: newDocRef.id, ...pkx };
+  });
+
+  await batch.commit();
+
+  return savedPKXs;
+};
+
 export const deletePokemon = async (
   parent,
   { pokemonId, collectionId },

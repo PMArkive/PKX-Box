@@ -15,9 +15,11 @@ const useStyles = makeStyles({
   },
 });
 
+const rowNames = ['HP', 'Atk', 'Def', 'SpA', 'SpD', 'Spe'];
+
 export const PokemonStats = ({ ivs = [], evs = [] }) => {
   const classes = useStyles();
-  const rowNames = ['HP', 'Atk', 'Def', 'SpA', 'SpD', 'Spe'];
+
   const rows = rowNames.map((name, index) => (
     <TableRow key={name}>
       <TableCell>{name}</TableCell>

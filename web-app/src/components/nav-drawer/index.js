@@ -65,7 +65,7 @@ export const NavDrawer = ({ isOpen, onClose }) => {
     >
       <div>
         <div className={classes.header}>
-          <IconButton onClick={onClose}>
+          <IconButton onClick={onClose} aria-label="Open navigation drawer">
             <ChevronLeftIcon />
           </IconButton>
         </div>

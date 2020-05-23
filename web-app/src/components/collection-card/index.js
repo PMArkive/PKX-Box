@@ -1,7 +1,10 @@
 import React from 'react';
 import { TitleCard } from '../title-card';
 import { useHistory } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import EditIcon from '@material-ui/icons/Edit';
 import { PokemonSprite } from '../pokemon-sprite';
 import { UploadButton } from '../upload-button';
 import { useMutation } from '@apollo/react-hooks';
@@ -36,26 +39,26 @@ const CollectionCardActions = ({
   const ownerButtons = isViewerOwner ? (
     <>
       <UploadButton id={`upload-${id}`} onUpload={onUploadPKX} multiple>
-        <Button variant="outlined" color="primary">
-          Upload PKX
-        </Button>
+        <IconButton aria-label="Upload PKX file">
+          <CloudUploadIcon />
+        </IconButton>
       </UploadButton>
-      <Button variant="outlined" color="primary" onClick={onClickEdit}>
-        Edit
-      </Button>
+      <IconButton onClick={onClickEdit} aria-label="Edit Collection">
+        <EditIcon />
+      </IconButton>
     </>
   ) : null;
 
   return (
     <>
-      <Button
+      <IconButton
         component="a"
         variant="outlined"
-        color="primary"
         onClick={onClickView}
+        aria-label="Show collection"
       >
-        View
-      </Button>
+        <VisibilityIcon />
+      </IconButton>
       {ownerButtons}
     </>
   );

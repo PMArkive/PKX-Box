@@ -27,22 +27,22 @@ export const PokemonView = ({ match }) => {
     species,
     ability,
     statNature,
-    EV_HP,
-    EV_ATK,
-    EV_DEF,
-    EV_SPE,
-    EV_SPA,
-    EV_SPD,
+    evHP,
+    evATK,
+    evDEF,
+    evSPE,
+    evSPA,
+    evSPD,
     move1,
     move2,
     move3,
     move4,
-    IV_HP,
-    IV_ATK,
-    IV_DEF,
-    IV_SPE,
-    IV_SPA,
-    IV_SPD,
+    ivHP,
+    ivATK,
+    ivDEF,
+    ivSPE,
+    ivSPA,
+    ivSPD,
     version,
     language,
     otName,
@@ -56,8 +56,8 @@ export const PokemonView = ({ match }) => {
     displayTID,
     displaySID,
   } = collection.pokemon || {};
-  const ivs = [IV_HP, IV_ATK, IV_DEF, IV_SPA, IV_SPD, IV_SPE];
-  const evs = [EV_HP, EV_ATK, EV_DEF, EV_SPA, EV_SPD, EV_SPE];
+  const ivs = [ivHP, ivATK, ivDEF, ivSPA, ivSPD, ivSPE];
+  const evs = [evHP, evATK, evDEF, evSPA, evSPD, evSPE];
   const moves = [move1, move2, move3, move4];
 
   const breadcrumbs = loading
@@ -84,7 +84,6 @@ export const PokemonView = ({ match }) => {
           <PokemonSummary
             ability={ability}
             ball={ball}
-            ivs={ivs}
             nature={statNature}
             species={species}
           />

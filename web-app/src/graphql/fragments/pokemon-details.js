@@ -18,19 +18,19 @@ export const POKEMON_DETAILS_FRAGMENT = gql`
     gender
     currentLevel
     statNature
-    IV_HP
-    IV_ATK
-    IV_DEF
-    IV_SPA
-    IV_SPD
-    IV_SPE
-    EV_HP
-    EV_ATK
-    EV_DEF
-    EV_SPA
-    EV_SPD
-    EV_SPE
-    isLegal
+    ivHP: displayIvHP
+    ivATK: displayIvATK
+    ivDEF: displayIvDEF
+    ivSPA: displayIvSPA
+    ivSPD: displayIvSPD
+    ivSPE: displayIvSPE
+    evHP: displayEvHP
+    evATK: displayEvATK
+    evDEF: displayEvDEF
+    evSPA: displayEvSPA
+    evSPD: displayEvSPD
+    evSPE: displayEvSPE
+    verifiedLegal
     metYear
     metMonth
     metDay
