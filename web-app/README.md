@@ -15,6 +15,7 @@ Due to the above, environment variables are prefixed with `REACT_APP` to avoid l
 - REACT_APP_COLLECTION_PREVIEW_POKEMON_LIMIT - limit of Pokemon shown in collection previews on the collection list screen. Example: 18
 - REACT_APP_GIT_HASH - git hash to bake into the app during build time, and is used to identify the deployed commit. This is automatically calculated and set on build.
 - REACT_APP_BUILD_EPOCH - time the web app was built so users know when new features/bug fixes are available. This is automatically calculated and set on build.
+- REACT_APP_GOOGLE_ANALYTICS_ID - Id from Google Analytics
 
 ## Primary tools used
 

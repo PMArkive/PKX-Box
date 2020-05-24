@@ -6,6 +6,10 @@ import { client } from './graphql/client';
 import { Routes } from './routes';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { theme } from './theme';
+import ReactGA from 'react-ga';
+import { generalConfig } from './config';
+
+ReactGA.initialize(generalConfig.googleAnalyticsId);
 
 const App = () => {
   return (
