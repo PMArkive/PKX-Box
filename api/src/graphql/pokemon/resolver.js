@@ -28,7 +28,15 @@ export const uploadBase64PKXs = async (
   const savePKXPromises = pkxs.map(async ({ base64PKX }) => {
     const parsedPKX = await parsePKX(base64PKX);
 
-    if (parsedPKX === null) return;
+    // Small checks - should probably add more in the future
+    if (
+      parsedPKX === null ||
+      parsedPKX.Species <= 0 ||
+      parsedPKX.Version <= 0 ||
+      parsedPKX.Sanity !== 0
+    ) {
+      throw new Error('Invalid PKX!');
+    }
 
     const newDocRef = pkxCollection.doc();
 
