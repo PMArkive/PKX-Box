@@ -13,7 +13,7 @@ import { useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_VIEWER_INFO } from '../../graphql/queries/user';
 import { useTranslation } from 'react-i18next';
-import { createCollectionListRoute } from '../../routes';
+import { createCollectionListRoute } from '../../utils/routes';
 import { generalConfig } from '../../config';
 
 const useStyles = makeStyles((theme) => ({

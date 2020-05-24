@@ -8,7 +8,7 @@ import { PokemonBall } from '../pokemon-ball';
 import { PokemonSprite } from '../pokemon-sprite';
 import { getLocalizedDate } from '../../utils/get-localized-date';
 import { useHistory } from 'react-router-dom';
-import { createPokemonRoute } from '../../routes';
+import { createPokemonRoute } from '../../utils/routes';
 
 const LanguageCell = ({ language }) => {
   const { t } = useTranslation();

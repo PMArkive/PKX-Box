@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { GET_VIEWER_INFO } from '../../graphql/queries/user';
 import { generalConfig } from '../../config';
 import { UserMenu } from '../user-menu';
-import { createCollectionListRoute } from '../../routes';
+import { createCollectionListRoute } from '../../utils/routes';
 import { useToast } from '../toast';
 import { handleLogout as logoutUser } from '../../utils/login';
 

@@ -12,7 +12,7 @@ import {
   createCollectionListRoute,
   createCollectionRoute,
   createPokemonRoute,
-} from '../routes';
+} from '../utils/routes';
 import { useTranslation } from 'react-i18next';
 
 export const PokemonView = ({ match }) => {

@@ -7,7 +7,10 @@ import { PokemonList } from '../components/pokemon-list';
 import { DELETE_POKEMON } from '../graphql/mutations/delete-pokemon';
 import { useToast } from '../components/toast';
 import { mergeWithArrays } from '../utils/merge-with-arrays';
-import { createCollectionListRoute, createCollectionRoute } from '../routes';
+import {
+  createCollectionListRoute,
+  createCollectionRoute,
+} from '../utils/routes';
 
 const useStyles = makeStyles({
   content: {

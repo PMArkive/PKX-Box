@@ -10,7 +10,7 @@ import { CollectionCard } from '../components/collection-card';
 import { EditCollectionModal } from '../components/edit-collection-modal';
 import { CREATE_COLLECTION } from '../graphql/mutations/create-collection';
 import { GET_VIEWER_INFO } from '../graphql/queries/user';
-import { createCollectionListRoute } from '../routes';
+import { createCollectionListRoute } from '../utils/routes';
 
 const useStyles = makeStyles({
   fab: {

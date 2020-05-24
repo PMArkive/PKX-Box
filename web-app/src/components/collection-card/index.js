@@ -13,7 +13,7 @@ import { convertArrayBufferToBase64 } from '../../utils/convert-array-buffer-to-
 import { UPDATE_COLLECTION } from '../../graphql/mutations/update-collection';
 import { DELETE_COLLECTION } from '../../graphql/mutations/delete-collection';
 import { EditCollectionModal } from '../edit-collection-modal';
-import { createCollectionRoute } from '../../routes';
+import { createCollectionRoute } from '../../utils/routes';
 import { useToast } from '../toast';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
